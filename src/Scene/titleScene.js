@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 // Background_Image 라는 이름으로 로드하기 위해서는 import해줘야함
 // import Background_Image from "../Asset/background/Space.png";
-import { createBackground } from "./base";
+import { createBackground } from "../base/base";
 
 export default class TitleScene extends Phaser.Scene {
   constructor() {
@@ -18,8 +18,10 @@ export default class TitleScene extends Phaser.Scene {
   create() {
     // background 생성
     createBackground(this);
+
     // TitleText 생성
     this.createTitleText();
+
     // StartButton 생성
     this.createStartButton();
   }

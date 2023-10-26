@@ -1,6 +1,6 @@
 import Phaser from "phaser";
-import TitleScene from "./title.js";
-import PlayScene from "./play.js";
+import TitleScene from "./Scene/titleScene.js";
+import PlayScene from "./Scene/playScene.js";
 
 // Webpack에서 이미지를 참조할 수 있게 import 해준다.
 import Background_Image from "../Asset/background/Space.png";
@@ -12,8 +12,12 @@ const config = {
   height: 700,
   scene: [TitleScene, PlayScene], // 여기에 Scene 배열을 추가
   autoCenter: Phaser.Scale.Center.CENTER_HORIZONTALLY,
-  rendererConfig: {
-    antialias: false,
+  // pixelArt: true,
+  // rendererConfig: {
+  //   antialias: false,
+  // },
+  physics: {
+    default: "arcade", // arcade라는 물리 엔진을 사용할 것임
   },
 };
 

@@ -1,5 +1,7 @@
 import Phaser from "phaser";
-import { createBackground } from "./base";
+import { createBackground } from "../base/base";
+import Player from "../Character/Player";
+import { Direction } from "../Character/Player";
 
 export default class PlayScene extends Phaser.Scene {
   constructor() {
@@ -20,18 +22,22 @@ export default class PlayScene extends Phaser.Scene {
   create() {
     // background 생성
     createBackground(this);
+
     // 키 할당
     this.assignKeys();
-    // Player 애니메이션 생성
-    this.createPlayerAnimations();
+
     // 캐릭터 생성
-    this.spawnPlayer();
+    this.player = new Player(this);
   }
 
   update() {
     this.bg.tilePositionY -= 2; // 숫자 2는 스크롤 속도를 조절.
-    // 키 입력 로직
-    this.inputKey();
+
+    // 애니메이션 관리
+    // this.handlePlayerAnimations();
+
+    // 움직임 관린
+    this.handlePlayerMove();
   }
 
   assignKeys() {
@@ -46,52 +52,8 @@ export default class PlayScene extends Phaser.Scene {
     this.keyJ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J);
     this.keyK = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K);
   }
-  createPlayerAnimations() {
-    // 애니메이션 생성
-    this.anims.create({
-      // 애니메이션 이름
-      key: "Idle",
-      // Player라는 스프라이트를 가지고와서 0번째부터 3번째까지 재생
-      frames: this.anims.generateFrameNumbers("Player", { start: 0, end: 3 }),
-      // 초당 프레임 재생수
-      frameRate: 10,
-      // 무한반복
-      repeat: -1,
-    });
-    this.anims.create({
-      key: "Right",
-      frames: this.anims.generateFrameNumbers("Player", { start: 12, end: 14 }),
-      frameRate: 10,
-      repeat: -1,
-    });
-    this.anims.create({
-      key: "Left",
-      frames: this.anims.generateFrameNumbers("Player", { start: 24, end: 26 }),
-      frameRate: 10,
-      repeat: -1,
-    });
-    this.anims.create({
-      key: "Die",
-      frames: this.anims.generateFrameNumbers("Player", { start: 36, end: 44 }),
-      frameRate: 10,
-      repeat: 0, //repeat 삭제
-    });
-    this.anims.create({
-      key: "Clear",
-      frames: this.anims.generateFrameNumbers("Player", { start: 48, end: 59 }),
-      frameRate: 10,
-      repeat: 0, //repeat 삭제
-    });
-  }
-  spawnPlayer() {
-    // 플레이어 개체 생성
-    this.player = this.add.sprite(400, 600, "Player");
-    // 사이즈를 원본의 2.5배
-    this.player.setScale(2.5);
-    // 처음 재생할 애니메이션 설정
-    this.player.play("Idle");
-  }
-  inputKey() {
+
+  handlePlayerAnimations() {
     // 키 입력 로직
     if (this.keyW.isDown) {
       console.log("Key W");
@@ -124,6 +86,20 @@ export default class PlayScene extends Phaser.Scene {
       this.player.anims.currentAnim.key !== "Clear"
     ) {
       this.player.play("Clear");
+    }
+  }
+
+  handlePlayerMove() {
+    if (this.keyA.isDown) {
+      this.player.move(Direction.Left);
+    } else if (this.keyD.isDown) {
+      this.player.move(Direction.Right);
+    }
+
+    if (this.keyW.isDown) {
+      this.player.move(Direction.Up);
+    } else if (this.keyS.isDown) {
+      this.player.move(Direction.Down);
     }
   }
 }
