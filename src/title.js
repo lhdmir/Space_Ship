@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 // Background_Image 라는 이름으로 로드하기 위해서는 import해줘야함
 // import Background_Image from "../Asset/background/Space.png";
+import { createBackground } from "./base";
 
 export default class TitleScene extends Phaser.Scene {
   constructor() {
@@ -8,7 +9,6 @@ export default class TitleScene extends Phaser.Scene {
   }
 
   preload() {
-    // 필요한 자원들을 로드합니다. 예: 배경 이미지, 버튼 이미지 등
     // dist/Asset/Space.png 파일을 배경으로 로드.
     this.load.image("Background_Image", "./Asset/Space.png");
     // 이런식으로도 로드 할 수 있다
@@ -16,21 +16,19 @@ export default class TitleScene extends Phaser.Scene {
   }
 
   create() {
-    // 대기 화면 구성 요소를 추가합니다. 예: 타이틀 텍스트, 시작 버튼 등
-    this.bg = this.add.tileSprite(
-      // tileSprite의 x, y 위치. 여기서는 게임 화면의 왼쪽 상단 모서리를 기준.
-      0,
-      0,
-      this.game.config.width,
-      this.game.config.height * 2,
-      "Background_Image"
-    );
-    // 기본적으로 Phaser의 대부분의 게임 오브젝트의 원점은 중앙에 설정되어 있다.
-    // 즉, (0.5, 0.5). 따라서 오브젝트를 회전하거나 크기를 조절할 때 중앙을 기준으로 변환이 이루어진다.
-    // 그러나 setOrigin(0, 0)을 사용하면 원점이 오브젝트의 왼쪽 상단 모서리가된다.
-    // 이렇게 설정하면 오브젝트의 위치를 지정할 때 왼쪽 상단 모서리를 기준으로 위치가 결정된다.
-    this.bg.setOrigin(0, 0);
+    // background 생성
+    createBackground(this);
+    // TitleText 생성
+    this.createTitleText();
+    // StartButton 생성
+    this.createStartButton();
+  }
 
+  update() {
+    this.bg.tilePositionY -= 2; // 숫자 2는 스크롤 속도를 조절.
+  }
+
+  createTitleText() {
     // Title text: Space Ship 표시
     // this.add
     //   .text(400, 200, "Space Ship", { fontSize: "100px", color: "#fff" })
@@ -48,7 +46,8 @@ export default class TitleScene extends Phaser.Scene {
       repeat: -1, // 무한히 반복. 0을 설정하면 반복하지 않음
       yoyo: true, // 애니메이션을 반대 방향으로도 재생. 여기서는 불투명 -> 투명 -> 불투명 순으로 재생됨
     });
-
+  }
+  createStartButton() {
     // Start 텍스트 생성
     // (400,400) 위치에 배치, setOrigin(0.5)로 중앙에 정렬
     let playButton = this.add
@@ -90,9 +89,5 @@ export default class TitleScene extends Phaser.Scene {
       // 플레이 버튼 클릭 시 플레이 화면으로 전환
       // this.scene.start("PlayScene");
     });
-  }
-
-  update() {
-    this.bg.tilePositionY -= 2; // 숫자 2는 스크롤 속도를 조절.
   }
 }

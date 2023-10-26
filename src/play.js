@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { createBackground } from "./base";
 
 export default class PlayScene extends Phaser.Scene {
   constructor() {
@@ -6,10 +7,10 @@ export default class PlayScene extends Phaser.Scene {
   }
 
   preload() {
-    // 플레이 화면에 필요한 자원들을 로드합니다.
+    // 배경 로드
     this.load.image("Background_Image", "./Asset/Space.png");
 
-    // 스프라이트시트 로드, 각 장당 32*32 사이즈로 자름
+    // 플레이어 스프라이트시트 로드, 각 장당 32*32 사이즈로 자름
     this.load.spritesheet("Player", "./Asset/Ship.png", {
       frameWidth: 32,
       frameHeight: 32,
@@ -17,7 +18,23 @@ export default class PlayScene extends Phaser.Scene {
   }
 
   create() {
-    // 플레이 화면 구성 요소를 추가합니다.
+    // background 생성
+    createBackground(this);
+    // 키 할당
+    this.assignKeys();
+    // Player 애니메이션 생성
+    this.createPlayerAnimations();
+    // 캐릭터 생성
+    this.spawnPlayer();
+  }
+
+  update() {
+    this.bg.tilePositionY -= 2; // 숫자 2는 스크롤 속도를 조절.
+    // 키 입력 로직
+    this.inputKey();
+  }
+
+  assignKeys() {
     // 사용할 키를 변수에 할당
     this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
     this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -28,16 +45,8 @@ export default class PlayScene extends Phaser.Scene {
     );
     this.keyJ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J);
     this.keyK = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K);
-
-    this.bg = this.add.tileSprite(
-      0,
-      0,
-      this.game.config.width,
-      this.game.config.height * 2,
-      "Background_Image"
-    );
-    this.bg.setOrigin(0, 0);
-
+  }
+  createPlayerAnimations() {
     // 애니메이션 생성
     this.anims.create({
       // 애니메이션 이름
@@ -73,7 +82,8 @@ export default class PlayScene extends Phaser.Scene {
       frameRate: 10,
       repeat: 0, //repeat 삭제
     });
-
+  }
+  spawnPlayer() {
     // 플레이어 개체 생성
     this.player = this.add.sprite(400, 600, "Player");
     // 사이즈를 원본의 2.5배
@@ -81,11 +91,7 @@ export default class PlayScene extends Phaser.Scene {
     // 처음 재생할 애니메이션 설정
     this.player.play("Idle");
   }
-
-  update() {
-    // 플레이 화면에서의 게임 로직을 업데이트 합니다.
-    this.bg.tilePositionY -= 2; // 숫자 2는 스크롤 속도를 조절.
-
+  inputKey() {
     // 키 입력 로직
     if (this.keyW.isDown) {
       console.log("Key W");
