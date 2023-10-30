@@ -1,7 +1,13 @@
 import Phaser from "phaser";
+
+// base 의 createBackground 함수 import
 import { createBackground } from "../base/base";
+
+// 플레이어 클래스 import
 import Player from "../Character/Player";
-import { Direction } from "../Character/Player";
+
+// 방향정의 오브젝트 import
+import { Direction } from "../base/base";
 
 export default class PlayScene extends Phaser.Scene {
   constructor() {
@@ -36,7 +42,7 @@ export default class PlayScene extends Phaser.Scene {
     // 애니메이션 관리
     // this.handlePlayerAnimations();
 
-    // 움직임 관린
+    // 움직임 관리
     this.handlePlayerMove();
   }
 
@@ -90,6 +96,7 @@ export default class PlayScene extends Phaser.Scene {
   }
 
   handlePlayerMove() {
+    // A or D (좌,우) 키가 눌렀다면 move함수에 해당 방향을 매개변수로 호출
     if (this.keyA.isDown) {
       this.player.move(Direction.Left);
     } else if (this.keyD.isDown) {

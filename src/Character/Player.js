@@ -1,20 +1,23 @@
-export const Direction = Object.freeze({
-  Up: "Up",
-  Down: "Down",
-  Left: "Left",
-  Right: "Right",
-});
+// 방향정의 오브젝트 import
+import { Direction } from "../base/base";
 
+// 플레이어 클래스 생성
 export default class Player extends Phaser.Physics.Arcade.Sprite {
+  // 플레이어의 속도 설정
   static PLAYER_SPEED = 5;
 
   constructor(scene) {
     super(scene, 400, 600, "Player");
+
+    //scene.add.existing 함수는 해당 scene에 오브젝트를 추가하는 함수.
+    //scene.physics.add.existing 함수는 해당 scene에 추가한 오브젝트를
+    //물리 엔진에 적용시키는 함수.
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
     // 사이즈 원본 2.5
     this.scale = 2.5;
+    // alpha 값 설정. 1은 불투명
     this.alpha = 1;
 
     // 애니메이션 생성
@@ -63,6 +66,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   move(direction) {
+    // direction을 매개변수로 받음
+    // 매개변수의 값에따라 player의 좌표를 player_speed 만큼 변경
+
     switch (direction) {
       case Direction.Up:
         this.y -= Player.PLAYER_SPEED;
@@ -74,12 +80,10 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
       case Direction.Left:
         this.x -= Player.PLAYER_SPEED;
-        this.flipX = true;
         break;
 
       case Direction.Right:
         this.x += Player.PLAYER_SPEED;
-        this.flipX = false;
         break;
     }
   }
