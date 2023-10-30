@@ -4,7 +4,7 @@ import { Direction } from "../base/base";
 // 플레이어 클래스 생성
 export default class Player extends Phaser.Physics.Arcade.Sprite {
   // 플레이어의 속도 설정
-  static PLAYER_SPEED = 5;
+  static PLAYER_SPEED = 3;
 
   constructor(scene) {
     super(scene, 400, 600, "Player");
@@ -19,6 +19,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     this.scale = 2.5;
     // alpha 값 설정. 1은 불투명
     this.alpha = 1;
+    // 화면 밖으로 나가지 않도록 설정
+    this.setCollideWorldBounds(true);
 
     // 애니메이션 생성
     this.createAnimations();

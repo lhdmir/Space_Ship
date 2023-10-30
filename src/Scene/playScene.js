@@ -39,11 +39,11 @@ export default class PlayScene extends Phaser.Scene {
   update() {
     this.bg.tilePositionY -= 2; // 숫자 2는 스크롤 속도를 조절.
 
-    // 애니메이션 관리
-    // this.handlePlayerAnimations();
-
     // 움직임 관리
     this.handlePlayerMove();
+
+    // 애니메이션 관리
+    this.handlePlayerAnimations();
   }
 
   assignKeys() {
@@ -55,57 +55,73 @@ export default class PlayScene extends Phaser.Scene {
     this.keySpace = this.input.keyboard.addKey(
       Phaser.Input.Keyboard.KeyCodes.SPACE
     );
+
     this.keyJ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J);
     this.keyK = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K);
   }
 
   handlePlayerAnimations() {
-    // 키 입력 로직
-    if (this.keyW.isDown) {
-      console.log("Key W");
-    } else if (this.keyS.isDown) {
-      console.log("Key S");
-    } else if (
+    // 애니메이션 재생 관리
+
+    // A가 눌러져있고, D는 눌러져있지 않은 상태에서 현재 재생중인 애니메이션이 Left가 아니라면
+    // Left를 재생
+    if (
       this.keyA.isDown &&
+      !this.keyD.isDown &&
       this.player.anims.currentAnim.key !== "Left"
     ) {
       this.player.play("Left");
-    } else if (
+    }
+    // D가 눌러져있고, A는 눌러져있지 않은 상태에서 현재 재생중인 애니메이션이 Right가 아니라면
+    // Right를 재생
+    else if (
+      !this.keyA.isDown &&
       this.keyD.isDown &&
       this.player.anims.currentAnim.key !== "Right"
     ) {
       this.player.play("Right");
-    } else if (
-      !this.keyA.isDown &&
-      !this.keyD.isDown &&
-      !this.keyJ.isDown &&
-      !this.keyK.isDown &&
-      this.player.anims.currentAnim.key !== "Idle"
+    }
+    // 좌,우 이동이 입력되지 않았을 때 또는 좌,우 이동이 모두 입력되었을 때
+    else if (
+      (!this.keyA.isDown && !this.keyD.isDown) ||
+      (this.keyA.isDown && this.keyD.isDown)
     ) {
-      this.player.play("Idle");
+      // 현재 재생중인 애니메이션이 Idle이 아니라면 Idle 재생
+      if (this.player.anims.currentAnim.key !== "Idle") {
+        this.player.play("Idle");
+      }
     }
 
-    if (this.keyJ.isDown && this.player.anims.currentAnim.key !== "Die") {
-      this.player.play("Die");
-    } else if (
-      this.keyK.isDown &&
-      this.player.anims.currentAnim.key !== "Clear"
-    ) {
-      this.player.play("Clear");
-    }
+    // this.player.anims.currentAnim.key !== 해당 조건이 없다면
+    // 키를 계속 입력받을때마다 애니메이션을 재생해서 애니메이션의 첫화면만 계속 재생된다.
+    // 결국 애니메이션이 재생되지 않고 멈춘것으로 보이기때문에
+    // 현재 재생중인 애니메이션과 재생할려는 애니메이션이 똑같다면 굳이 새로 애니메이션을 재생하지 않고
+    // 현재 무한 재생중인 애니메이션을 계속 재생하는것이 효율적이다.
+    // 이것은 애니메이션이 무한재생일때 가능한 조건이다.
+
+    // Die, Clear 애니메이션
+    // if (this.keyJ.isDown && this.player.anims.currentAnim.key !== "Die") {
+    //   this.player.play("Die");
+    // } else if (
+    //   this.keyK.isDown &&
+    //   this.player.anims.currentAnim.key !== "Clear"
+    // ) {
+    //   this.player.play("Clear");
+    // }
   }
 
   handlePlayerMove() {
-    // A or D (좌,우) 키가 눌렀다면 move함수에 해당 방향을 매개변수로 호출
+    // W,A,S,D 키가 눌렀다면 move함수에 해당 방향을 매개변수로 호출
     if (this.keyA.isDown) {
       this.player.move(Direction.Left);
-    } else if (this.keyD.isDown) {
+    }
+    if (this.keyD.isDown) {
       this.player.move(Direction.Right);
     }
-
     if (this.keyW.isDown) {
       this.player.move(Direction.Up);
-    } else if (this.keyS.isDown) {
+    }
+    if (this.keyS.isDown) {
       this.player.move(Direction.Down);
     }
   }

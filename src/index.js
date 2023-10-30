@@ -12,7 +12,7 @@ const config = {
   height: 700,
   scene: [TitleScene, PlayScene], // 여기에 Scene 배열을 추가
   autoCenter: Phaser.Scale.Center.CENTER_HORIZONTALLY,
-  // pixelArt: true,
+  pixelArt: true,
   // rendererConfig: {
   //   antialias: false,
   // },
