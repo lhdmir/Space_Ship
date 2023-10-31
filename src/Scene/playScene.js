@@ -18,8 +18,14 @@ export default class PlayScene extends Phaser.Scene {
     // 배경 로드
     this.load.image("Background_Image", "./Asset/Space.png");
 
-    // 플레이어 스프라이트시트 로드, 각 장당 32*32 사이즈로 자름
+    // 플레이어 스프라이트시트를 Player 라는 이름으로 로드, 각 장당 32*32 사이즈로 자름
     this.load.spritesheet("Player", "./Asset/Ship.png", {
+      frameWidth: 32,
+      frameHeight: 32,
+    });
+
+    // Bullet 스프라이트시트를 Bullets 라는 이름으로 로드
+    this.load.spritesheet("Bullets", "./Asset/Bullet.png", {
       frameWidth: 32,
       frameHeight: 32,
     });
@@ -34,6 +40,9 @@ export default class PlayScene extends Phaser.Scene {
 
     // 캐릭터 생성
     this.player = new Player(this);
+
+    // Bullets 그룹 생성
+    this.bullets = this.physics.add.group();
   }
 
   update() {

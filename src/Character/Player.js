@@ -1,10 +1,15 @@
+import Phaser from "phaser";
+
 // 방향정의 오브젝트 import
 import { Direction } from "../base/base";
+
+// Bullet 클래스 import
+import Bullet from "../Effect/Bullet";
 
 // 플레이어 클래스 생성
 export default class Player extends Phaser.Physics.Arcade.Sprite {
   // 플레이어의 속도 설정
-  static PLAYER_SPEED = 3;
+  static PLAYER_SPEED = 5;
 
   constructor(scene) {
     super(scene, 400, 600, "Player");
@@ -15,21 +20,32 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
-    // 사이즈 원본 2.5
-    this.scale = 2.5;
+    // 사이즈 설정
+    this.setScale(3);
     // alpha 값 설정. 1은 불투명
-    this.alpha = 1;
+    this.setAlpha(1);
+
     // 화면 밖으로 나가지 않도록 설정
     this.setCollideWorldBounds(true);
 
     // 애니메이션 생성
-    this.createAnimations();
+    this.createPlayerAnimations();
 
     // 최초 재생 애니메이션 Idle 설정
     this.play("Idle");
+
+    // 공격 이벤트
+    // 300ms 한번씩 shotBullet()을 호출하는 이벤트를 추가
+    scene.time.addEvent({
+      delay: 300,
+      callback: () => {
+        this.shotBullet();
+      },
+      loop: true,
+    });
   }
 
-  createAnimations() {
+  createPlayerAnimations() {
     // 애니메이션 생성
     this.anims.create({
       // 애니메이션 이름
@@ -88,5 +104,12 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.x += Player.PLAYER_SPEED;
         break;
     }
+  }
+
+  shotBullet() {
+    // bullet 인스턴스 생성
+    let bullet = new Bullet(this.scene, this);
+    // bullet 이동속도 설정
+    bullet.body.velocity.y = -300;
   }
 }

@@ -5,6 +5,7 @@ import PlayScene from "./Scene/playScene.js";
 // Webpack에서 이미지를 참조할 수 있게 import 해준다.
 import Background_Image from "../Asset/background/Space.png";
 import Player_Image from "../Asset/Player/Ship.png";
+import Bullet_Image from "../Asset/Player/Bullet.png";
 
 const config = {
   type: Phaser.AUTO, // WebGL if available, otherwise Canvas
