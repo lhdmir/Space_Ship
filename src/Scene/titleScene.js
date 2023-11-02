@@ -74,7 +74,7 @@ export default class TitleScene extends Phaser.Scene {
       yoyo: true,
       onComplete: () => {
         // 트윈이 완료되면 호출될 콜백 함수
-        this.scene.start("PlayScene");
+        this.scene.start("Stage1");
       },
     });
 

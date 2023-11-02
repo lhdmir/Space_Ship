@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 
-export default class Bullet extends Phaser.Physics.Arcade.Sprite {
+export default class Player_Bullet extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, player) {
     const x = player.x;
     const y = player.y - 40;
@@ -11,7 +11,7 @@ export default class Bullet extends Phaser.Physics.Arcade.Sprite {
     scene.physics.world.enableBody(this);
 
     // Bullet 애니메이션 생성
-    this.createBulletAnimation();
+    this.createPlayerBulletAnimation();
 
     // 총알 초기 설정
     this.play("Bullet_Level_1");
@@ -20,11 +20,11 @@ export default class Bullet extends Phaser.Physics.Arcade.Sprite {
     this.setVisible(true);
 
     // Bullets 그룹에 오브젝트 추가
-    scene.bullets.add(this);
+    scene.player_attack.add(this);
   }
 
   // Bullet 애니메이션 생성
-  createBulletAnimation() {
+  createPlayerBulletAnimation() {
     this.anims.create({
       key: "Bullet_Level_1",
       frames: this.anims.generateFrameNumbers("Bullets", {

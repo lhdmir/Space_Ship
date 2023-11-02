@@ -9,9 +9,14 @@ import Player from "../Character/Player";
 // 방향정의 오브젝트 import
 import { Direction } from "../base/base";
 
-export default class PlayScene extends Phaser.Scene {
+// Enemy 클래스 import
+import Enemy1 from "../Character/Enemies/Enemy_1";
+
+// width: 800,
+// height: 700,
+export default class Stage1 extends Phaser.Scene {
   constructor() {
-    super({ key: "PlayScene" });
+    super({ key: "Stage1" });
   }
 
   preload() {
@@ -29,6 +34,18 @@ export default class PlayScene extends Phaser.Scene {
       frameWidth: 32,
       frameHeight: 32,
     });
+
+    // Enemy 스프라이트시트를 Enemies 라는 이름으로 로드
+    this.load.spritesheet("Enemies", "./Asset/Enemies.png", {
+      frameWidth: 32,
+      frameHeight: 32,
+    });
+
+    // Enemy Explosion 스프라이트시트 로드
+    this.load.spritesheet("Enemy_Explosion", "./Asset/Enemy_Explosion.png", {
+      frameWidth: 32,
+      frameHeight: 32,
+    });
   }
 
   create() {
@@ -41,8 +58,14 @@ export default class PlayScene extends Phaser.Scene {
     // 캐릭터 생성
     this.player = new Player(this);
 
-    // Bullets 그룹 생성
-    this.bullets = this.physics.add.group();
+    // Player Bullets 그룹 생성
+    this.player_attack = this.physics.add.group();
+
+    // test enemy 생성
+    this.testenemy = new Enemy1(this, 400, 50, this.player);
+
+    // Enemy Bullets 그룸 생성
+    this.enemy_attack = this.physics.add.group();
   }
 
   update() {

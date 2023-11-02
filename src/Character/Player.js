@@ -4,7 +4,7 @@ import Phaser from "phaser";
 import { Direction } from "../base/base";
 
 // Bullet 클래스 import
-import Bullet from "../Effect/Bullet";
+import Player_Bullet from "../Effect/Player_Bullet";
 
 // 플레이어 클래스 생성
 export default class Player extends Phaser.Physics.Arcade.Sprite {
@@ -108,7 +108,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
   shotBullet() {
     // bullet 인스턴스 생성
-    let bullet = new Bullet(this.scene, this);
+    let bullet = new Player_Bullet(this.scene, this);
     // bullet 이동속도 설정
     bullet.body.velocity.y = -300;
   }
