@@ -59,13 +59,10 @@ export default class Stage1 extends Phaser.Scene {
     this.player = new Player(this);
 
     // Player Bullets 그룹 생성
-    this.player_attack = this.physics.add.group();
-
-    // test enemy 생성
-    this.testenemy = new Enemy1(this, 400, 50, this.player);
+    this.player_bullet = this.physics.add.group();
 
     // Enemy Bullets 그룸 생성
-    this.enemy_attack = this.physics.add.group();
+    this.enemy_bullet = this.physics.add.group();
   }
 
   update() {

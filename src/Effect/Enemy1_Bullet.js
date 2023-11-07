@@ -20,7 +20,7 @@ export default class Bullet extends Phaser.Physics.Arcade.Sprite {
     this.setVisible(true);
 
     // Enemy 그룹에 오브젝트 추가
-    scene.enemy_attack.add(this);
+    scene.enemy_bullet.add(this);
   }
 
   // Bullet 애니메이션 생성
