@@ -3,6 +3,7 @@ import Phaser from "phaser";
 import Enemy1_Bullet from "../../Effect/Enemy1_Bullet";
 
 export default class Enemy1 extends Phaser.Physics.Arcade.Sprite {
+  // 클래스 변수, 모든 인스턴스가 해당 변수를 공유할 수 있다
   static ENEMY_SPEED = 30;
 
   constructor(scene, x, y) {
@@ -11,6 +12,7 @@ export default class Enemy1 extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
+    // 인스턴스 변수, 각 인스턴스 별로 관리함
     this.ENEMY_HP = 100;
 
     this.setScale(3);
