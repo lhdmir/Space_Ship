@@ -23,6 +23,13 @@ export default class Player_Bullet extends Phaser.Physics.Arcade.Sprite {
     scene.player_bullet.add(this);
   }
 
+  update() {
+    // 총알이 화면 밖으로 나가면 제거
+    if (this.y < 20) {
+      this.destroy();
+    }
+  }
+
   // Bullet 애니메이션 생성
   createPlayerBulletAnimation() {
     this.anims.create({

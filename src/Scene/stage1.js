@@ -11,6 +11,7 @@ import { Direction } from "../base/base";
 
 // Enemy 클래스 import
 import Enemy1 from "../Character/Enemies/Enemy_1";
+import Player_Bullet from "../Effect/Player_Bullet";
 
 // width: 800,
 // height: 700,
@@ -59,7 +60,10 @@ export default class Stage1 extends Phaser.Scene {
     this.player = new Player(this);
 
     // Player Bullets 그룹 생성
-    this.player_bullet = this.physics.add.group();
+    this.player_bullet = this.physics.add.group({
+      classType: Player_Bullet, // 해당 그룹의 타입은 Player_Bullet 클래스만
+      runChildUpdate: true, // 각 총알의 update() 메소드를 자동으로 호출
+    });
 
     // Enemy Bullets 그룸 생성
     this.enemy_bullet = this.physics.add.group();
