@@ -50,7 +50,7 @@ export default class Stage1 extends Phaser.Scene {
   }
 
   create() {
-    // this.physics.world.createDebugGraphic();
+    this.physics.world.createDebugGraphic();
 
     // background 생성
     createBackground(this);
@@ -71,19 +71,23 @@ export default class Stage1 extends Phaser.Scene {
     this.enemy_bullet = this.physics.add.group();
 
     // Enemy 그룹 생성
-    // this.enemies = this.physics.add.group();
-    // this.enemy1 = new Enemy1(this, 100, 50);
-    // this.enemies.add(this.enemy1);
-    // this.enemies.add(new Enemy1(this, 100, 50));
+    this.enemies = this.physics.add.group();
 
-    // this.physics.add.overlap(
-    //   this.player_bullet,
-    //   this.enemies,
-    //   (bullet, enemy) => {
-    //     bullet.destroy(); // 총알 제거
-    //     enemy.hit(10); // 적에게 피해를 줌 (예: 1의 피해)
-    //   }
-    // );
+    // test enemy 생성
+    // this.enemy1 = new Enemy1(this, 700, 50);
+    // this.enemies.add(this.enemy1);
+    this.enemies.add(new Enemy1(this, 100, 50));
+
+    // 플레이어의 총알 그룹에 있는 객체와 적 개체가 충돌(overlap)
+    // 되었을때 실행할 물리이벤트 등록
+    this.physics.add.overlap(
+      this.player_bullet,
+      this.enemies,
+      (bullet, enemy) => {
+        bullet.destroy(); // 총알 제거
+        enemy.hit(10); // 적에게 피해를 줌 (예: 10의 피해)
+      }
+    );
   }
 
   update() {

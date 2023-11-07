@@ -3,13 +3,14 @@ import Phaser from "phaser";
 import Enemy1_Bullet from "../../Effect/Enemy1_Bullet";
 
 export default class Enemy1 extends Phaser.Physics.Arcade.Sprite {
+  static ENEMY_SPEED = 30;
+
   constructor(scene, x, y) {
     super(scene, x, y, "Enemies");
 
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
-    this.ENEMY_SPEED = 30;
     this.ENEMY_HP = 100;
 
     this.setScale(3);
@@ -91,6 +92,7 @@ export default class Enemy1 extends Phaser.Physics.Arcade.Sprite {
     this.ENEMY_HP -= damage;
     console.log(this.ENEMY_HP);
 
+    // Death
     if (this.ENEMY_HP <= 0) {
       // 인스턴스를 파괴하기 전 타이머 이벤트들을 제거
       if (this.moveEvent) {
@@ -99,7 +101,17 @@ export default class Enemy1 extends Phaser.Physics.Arcade.Sprite {
       if (this.shootEvent) {
         this.shootEvent.remove();
       }
-      this.destroy();
+
+      this.body.enable = false; // 물리적 몸체를 비활성화하여 더 이상 충돌하지 않도록 설정.
+
+      // 애니메이션을 재생하고, 애니메이션이 완료되면 'animationcomplete' 이벤트가 발생.
+      this.play("Explosion").on(
+        "animationcomplete",
+        () => {
+          this.destroy();
+        },
+        this
+      ); // 'this'는 콜백 내에서 Enemy1 인스턴스를 참조하기 위해 전달된다.
     }
   }
 }
