@@ -50,6 +50,8 @@ export default class Stage1 extends Phaser.Scene {
   }
 
   create() {
+    // this.physics.world.createDebugGraphic();
+
     // background 생성
     createBackground(this);
 
@@ -67,6 +69,21 @@ export default class Stage1 extends Phaser.Scene {
 
     // Enemy Bullets 그룸 생성
     this.enemy_bullet = this.physics.add.group();
+
+    // Enemy 그룹 생성
+    // this.enemies = this.physics.add.group();
+    // this.enemy1 = new Enemy1(this, 100, 50);
+    // this.enemies.add(this.enemy1);
+    // this.enemies.add(new Enemy1(this, 100, 50));
+
+    // this.physics.add.overlap(
+    //   this.player_bullet,
+    //   this.enemies,
+    //   (bullet, enemy) => {
+    //     bullet.destroy(); // 총알 제거
+    //     enemy.hit(10); // 적에게 피해를 줌 (예: 1의 피해)
+    //   }
+    // );
   }
 
   update() {

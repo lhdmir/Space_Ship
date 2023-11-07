@@ -3,13 +3,14 @@ import Phaser from "phaser";
 import Enemy1_Bullet from "../../Effect/Enemy1_Bullet";
 
 export default class Enemy1 extends Phaser.Physics.Arcade.Sprite {
-  static ENEMY_SPEED = 30;
-
   constructor(scene, x, y) {
     super(scene, x, y, "Enemies");
 
     scene.add.existing(this);
     scene.physics.add.existing(this);
+
+    this.ENEMY_SPEED = 30;
+    this.ENEMY_HP = 100;
 
     this.setScale(3);
     this.setAlpha(1);
@@ -20,7 +21,7 @@ export default class Enemy1 extends Phaser.Physics.Arcade.Sprite {
     this.play("Move");
 
     // 1.5초에 한번씩 움직이는 이벤트 추가
-    scene.time.addEvent({
+    this.moveEvent = scene.time.addEvent({
       delay: 1500,
       callback: () => {
         this.move();
@@ -29,7 +30,7 @@ export default class Enemy1 extends Phaser.Physics.Arcade.Sprite {
     });
 
     // 1초에 한번씩 공격하는 이벤트 추가
-    scene.time.addEvent({
+    this.shootEvent = scene.time.addEvent({
       delay: 1000,
       callback: () => {
         this.shotBullet();
@@ -84,5 +85,21 @@ export default class Enemy1 extends Phaser.Physics.Arcade.Sprite {
   shotBullet() {
     let bullet = new Enemy1_Bullet(this.scene, this);
     bullet.body.velocity.y = +300;
+  }
+
+  hit(damage) {
+    this.ENEMY_HP -= damage;
+    console.log(this.ENEMY_HP);
+
+    if (this.ENEMY_HP <= 0) {
+      // 인스턴스를 파괴하기 전 타이머 이벤트들을 제거
+      if (this.moveEvent) {
+        this.moveEvent.remove();
+      }
+      if (this.shootEvent) {
+        this.shootEvent.remove();
+      }
+      this.destroy();
+    }
   }
 }
