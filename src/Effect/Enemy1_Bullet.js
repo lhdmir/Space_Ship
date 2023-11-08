@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 
-export default class Bullet extends Phaser.Physics.Arcade.Sprite {
+export default class Enemy1_Bullet extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, player) {
     const x = player.x;
     const y = player.y + 30;
@@ -24,6 +24,13 @@ export default class Bullet extends Phaser.Physics.Arcade.Sprite {
 
     // Enemy 그룹에 오브젝트 추가
     scene.enemy_bullet.add(this);
+  }
+
+  update() {
+    // 총알이 화면 밖으로 나가면 제거
+    if (this.y > 700) {
+      this.destroy();
+    }
   }
 
   // Bullet 애니메이션 생성

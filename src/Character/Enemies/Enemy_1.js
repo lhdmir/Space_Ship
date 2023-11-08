@@ -95,7 +95,6 @@ export default class Enemy1 extends Phaser.Physics.Arcade.Sprite {
 
   hit(damage) {
     this.ENEMY_HP -= damage;
-    console.log(this.ENEMY_HP);
 
     // Death
     if (this.ENEMY_HP <= 0) {

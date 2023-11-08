@@ -5,13 +5,14 @@ import { createBackground, hitBlink } from "../base/base";
 
 // 플레이어 클래스 import
 import Player from "../Character/Player";
+import Player_Bullet from "../Effect/Player_Bullet";
 
 // 방향정의 오브젝트 import
 import { Direction } from "../base/base";
 
 // Enemy 클래스 import
 import Enemy1 from "../Character/Enemies/Enemy_1";
-import Player_Bullet from "../Effect/Player_Bullet";
+import Enemy1_Bullet from "../Effect/Enemy1_Bullet";
 
 // width: 800,
 // height: 700,
@@ -50,7 +51,7 @@ export default class Stage1 extends Phaser.Scene {
   }
 
   create() {
-    // this.physics.world.createDebugGraphic();
+    this.physics.world.createDebugGraphic();
 
     // background 생성
     createBackground(this);
@@ -59,7 +60,9 @@ export default class Stage1 extends Phaser.Scene {
     this.assignKeys();
 
     // 플레이어 생성
+    this.playerGroup = this.physics.add.group();
     this.player = new Player(this);
+    this.playerGroup.add(this.player);
 
     // 플레이어 생성 후 Spawn 재생
     // Spawn 재생이 끝나면 Idle을 재생하고 spawn플래그를 false로 변경
@@ -79,7 +82,10 @@ export default class Stage1 extends Phaser.Scene {
     });
 
     // Enemy Bullets 그룸 생성
-    this.enemy_bullet = this.physics.add.group();
+    this.enemy_bullet = this.physics.add.group({
+      classType: Enemy1_Bullet,
+      runChildUpdate: true,
+    });
 
     // Enemy 그룹 생성
     this.enemies = this.physics.add.group();
@@ -103,13 +109,35 @@ export default class Stage1 extends Phaser.Scene {
         hitBlink(this, enemy); //피격 이펙트
       }
     );
+
+    // Enemy의 총알 그룹에 있는 객체와 플레이어가 충돌시
+    // 실행할 물리이벤트 등록
+    this.physics.add.overlap(
+      this.enemy_bullet,
+      this.playerGroup,
+      (bullet, player) => {
+        bullet.destroy(); // 총알 제거
+        player.hit(10); // 플레이어 10 피해
+        hitBlink(this, player); //피격 이펙트
+      }
+    );
+
+    // Bullet끼리 충돌시 상쇄
+    this.physics.add.overlap(
+      this.player_bullet,
+      this.enemy_bullet,
+      (pBullet, eBullet) => {
+        pBullet.destroy();
+        eBullet.destroy();
+      }
+    );
   }
 
   update() {
     this.bg.tilePositionY -= 2; // 숫자 2는 스크롤 속도를 조절.
 
     // 스폰이 완료되면 실행
-    if (!this.player.isSpawning) {
+    if (!this.player.isSpawning || this.player.isDeath) {
       // 움직임 관리
       this.handlePlayerMove();
 
@@ -170,16 +198,6 @@ export default class Stage1 extends Phaser.Scene {
     // 현재 재생중인 애니메이션과 재생할려는 애니메이션이 똑같다면 굳이 새로 애니메이션을 재생하지 않고
     // 현재 무한 재생중인 애니메이션을 계속 재생하는것이 효율적이다.
     // 이것은 애니메이션이 무한재생일때 가능한 조건이다.
-
-    // Die, Clear 애니메이션
-    // if (this.keyJ.isDown && this.player.anims.currentAnim.key !== "Die") {
-    //   this.player.play("Die");
-    // } else if (
-    //   this.keyK.isDown &&
-    //   this.player.anims.currentAnim.key !== "Clear"
-    // ) {
-    //   this.player.play("Clear");
-    // }
   }
 
   handlePlayerMove() {
