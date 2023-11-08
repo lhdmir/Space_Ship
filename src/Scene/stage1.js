@@ -60,6 +60,14 @@ export default class Stage1 extends Phaser.Scene {
 
     // 캐릭터 생성
     this.player = new Player(this);
+    this.player.play("Spawn").on(
+      "animationcomplete",
+      () => {
+        this.player.play("Idle");
+        this.player.isSpawning = false; // Spawn 애니메이션이 끝났음을 나타냄
+      },
+      this
+    );
 
     // Player Bullets 그룹 생성
     this.player_bullet = this.physics.add.group({
@@ -93,11 +101,14 @@ export default class Stage1 extends Phaser.Scene {
   update() {
     this.bg.tilePositionY -= 2; // 숫자 2는 스크롤 속도를 조절.
 
-    // 움직임 관리
-    this.handlePlayerMove();
+    // 스폰이 완료되면 실행
+    if (!this.player.isSpawning) {
+      // 움직임 관리
+      this.handlePlayerMove();
 
-    // 애니메이션 관리
-    this.handlePlayerAnimations();
+      // 애니메이션 관리
+      this.handlePlayerAnimations();
+    }
   }
 
   assignKeys() {

@@ -9,7 +9,7 @@ import Player_Bullet from "../Effect/Player_Bullet";
 // 플레이어 클래스 생성
 export default class Player extends Phaser.Physics.Arcade.Sprite {
   // 플레이어의 속도 설정
-  static PLAYER_SPEED = 5;
+  static PLAYER_SPEED = 3;
 
   constructor(scene) {
     super(scene, 400, 600, "Player");
@@ -32,7 +32,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     this.createPlayerAnimations();
 
     // 최초 재생 애니메이션 Idle 설정
-    this.play("Idle");
+    // this.play("Idle");
+    // this.play("Spawn");
+
+    // 애니메이션 상태 플래그 추가
+    this.isSpawning = true;
 
     // 공격 이벤트
     // 300ms 한번씩 shotBullet()을 호출하는 이벤트를 추가
@@ -81,6 +85,14 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
       frameRate: 10,
       repeat: 0, //repeat 삭제
     });
+    this.anims.create({
+      key: "Spawn",
+      frames: this.anims.generateFrameNumbers("Player", {
+        frames: [59, 58, 57, 56, 55, 54, 53, 52, 51, 50, 49, 48],
+      }),
+      frameRate: 10,
+      repeat: 0,
+    });
   }
 
   move(direction) {
@@ -107,9 +119,12 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   shotBullet() {
-    // bullet 인스턴스 생성
-    let bullet = new Player_Bullet(this.scene, this);
-    // bullet 이동속도 설정
-    bullet.body.velocity.y = -300;
+    // 스폰이 완료되면 Bullet 생성
+    if (!this.isSpawning) {
+      // bullet 인스턴스 생성
+      let bullet = new Player_Bullet(this.scene, this);
+      // bullet 이동속도 설정
+      bullet.body.velocity.y = -300;
+    }
   }
 }
