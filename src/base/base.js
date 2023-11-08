@@ -1,3 +1,5 @@
+import Phaser from "phaser";
+
 // 각 씬에서 공통적으로 필요한 모듈들
 
 // background 생성 함수
@@ -34,3 +36,15 @@ export const Direction = Object.freeze({
   Left: "Left",
   Right: "Right",
 });
+
+// hit 했을때 깜빡거리는 효과
+export function hitBlink(scene, sprite) {
+  scene.tweens.add({
+    targets: sprite,
+    alpha: { from: 1, to: 0.2 },
+    duration: 100,
+    ease: "Linear",
+    repeat: 1,
+    yoyo: true,
+  });
+}

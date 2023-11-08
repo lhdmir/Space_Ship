@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 
 // base 의 createBackground 함수 import
-import { createBackground } from "../base/base";
+import { createBackground, hitBlink } from "../base/base";
 
 // 플레이어 클래스 import
 import Player from "../Character/Player";
@@ -89,6 +89,8 @@ export default class Stage1 extends Phaser.Scene {
     // this.enemy1 = new Enemy1(this, 700, 50);
     // this.enemies.add(this.enemy1);
     this.enemies.add(new Enemy1(this, 100, 50));
+    this.enemies.add(new Enemy1(this, 400, 50));
+    this.enemies.add(new Enemy1(this, 700, 50));
 
     // 플레이어의 총알 그룹에 있는 객체와 적 개체가 충돌(overlap)
     // 되었을때 실행할 물리이벤트 등록
@@ -98,6 +100,7 @@ export default class Stage1 extends Phaser.Scene {
       (bullet, enemy) => {
         bullet.destroy(); // 총알 제거
         enemy.hit(10); // 적에게 피해를 줌 (예: 10의 피해)
+        hitBlink(this, enemy); //피격 이펙트
       }
     );
   }
