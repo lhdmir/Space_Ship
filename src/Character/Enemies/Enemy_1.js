@@ -19,6 +19,9 @@ export default class Enemy1 extends Phaser.Physics.Arcade.Sprite {
     this.setAlpha(1);
     // this.setCollideWorldBounds(true);
 
+    // 물리 충돌 사이즈 조정
+    this.setSize(this.width * 0.65, this.height * 0.45, true);
+
     this.createEnemy1Animations();
 
     this.play("Move");

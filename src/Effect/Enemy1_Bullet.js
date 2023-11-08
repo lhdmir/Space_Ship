@@ -19,6 +19,9 @@ export default class Bullet extends Phaser.Physics.Arcade.Sprite {
     this.setActive(true);
     this.setVisible(true);
 
+    // 물리 충돌 사이즈 조정
+    this.setSize(this.width * 0.2, this.height * 0.2, true);
+
     // Enemy 그룹에 오브젝트 추가
     scene.enemy_bullet.add(this);
   }
