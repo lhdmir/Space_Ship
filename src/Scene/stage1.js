@@ -58,8 +58,11 @@ export default class Stage1 extends Phaser.Scene {
     // 키 할당
     this.assignKeys();
 
-    // 캐릭터 생성
+    // 플레이어 생성
     this.player = new Player(this);
+
+    // 플레이어 생성 후 Spawn 재생
+    // Spawn 재생이 끝나면 Idle을 재생하고 spawn플래그를 false로 변경
     this.player.play("Spawn").on(
       "animationcomplete",
       () => {
@@ -82,6 +85,7 @@ export default class Stage1 extends Phaser.Scene {
     this.enemies = this.physics.add.group();
 
     // test enemy 생성
+    // 아래와 같이 Enemy를 생성할 수 있음
     // this.enemy1 = new Enemy1(this, 700, 50);
     // this.enemies.add(this.enemy1);
     this.enemies.add(new Enemy1(this, 100, 50));

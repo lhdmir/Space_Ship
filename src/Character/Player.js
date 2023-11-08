@@ -31,10 +31,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     // 애니메이션 생성
     this.createPlayerAnimations();
 
-    // 최초 재생 애니메이션 Idle 설정
-    // this.play("Idle");
-    // this.play("Spawn");
-
     // 애니메이션 상태 플래그 추가
     this.isSpawning = true;
 
