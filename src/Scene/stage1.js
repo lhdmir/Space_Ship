@@ -63,6 +63,7 @@ export default class Stage1 extends Phaser.Scene {
     this.playerGroup = this.physics.add.group();
     this.player = new Player(this);
     this.playerGroup.add(this.player);
+    this.player.setCollideWorldBounds(true);
 
     // 플레이어 생성 후 Spawn 재생
     // Spawn 재생이 끝나면 Idle을 재생하고 spawn플래그를 false로 변경
@@ -70,7 +71,7 @@ export default class Stage1 extends Phaser.Scene {
       "animationcomplete",
       () => {
         this.player.play("Idle");
-        this.player.isSpawning = false; // Spawn 애니메이션이 끝났음을 나타냄
+        this.player.isMoveable = true; // Spawn 애니메이션이 끝났음을 나타냄
       },
       this
     );
@@ -137,7 +138,7 @@ export default class Stage1 extends Phaser.Scene {
     this.bg.tilePositionY -= 2; // 숫자 2는 스크롤 속도를 조절.
 
     // 스폰이 완료되면 실행
-    if (!this.player.isSpawning || this.player.isDeath) {
+    if (this.player.isMoveable) {
       // 움직임 관리
       this.handlePlayerMove();
 

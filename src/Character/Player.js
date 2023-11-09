@@ -16,6 +16,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.PLAYER_HP = 100;
 
+    // 이동 가능한지 체크하는 플래그 추가
+    this.isMoveable = false;
+
     //scene.add.existing 함수는 해당 scene에 오브젝트를 추가하는 함수.
     //scene.physics.add.existing 함수는 해당 scene에 추가한 오브젝트를
     //물리 엔진에 적용시키는 함수.
@@ -33,21 +36,15 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     // 애니메이션 생성
     this.createPlayerAnimations();
 
-    // 스폰 상태 플래그 추가
-    this.isSpawning = true;
-
-    // Die 상태 플래그 추가
-    this.isDeath = false;
-
     // 공격 이벤트
     // 300ms 한번씩 shotBullet()을 호출하는 이벤트를 추가
-    this.shootEvent = scene.time.addEvent({
-      delay: 300,
-      callback: () => {
-        this.shotBullet();
-      },
-      loop: true,
-    });
+    // this.shootEvent = scene.time.addEvent({
+    //   delay: 300,
+    //   callback: () => {
+    //     this.shotBullet();
+    //   },
+    //   loop: true,
+    // });
   }
 
   createPlayerAnimations() {
@@ -131,12 +128,10 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
   hit(damage) {
     this.PLAYER_HP -= damage;
-    console.log(this.PLAYER_HP);
 
     // Death
     if (this.PLAYER_HP <= 0) {
-      console.log(this.isDeath);
-      this.isDeath = true;
+      this.isMoveable = false;
 
       // 인스턴스를 파괴하기 전 타이머 이벤트들을 제거
       if (this.shootEvent) {
