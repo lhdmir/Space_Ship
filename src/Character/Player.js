@@ -15,7 +15,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     super(scene, 400, 600, "Player");
 
     // this.PLAYER_HP = 100;
-    this.PLAYER_HP = 100;
+    this.PLAYER_HP = 30;
 
     // 이동 가능한지 체크하는 플래그 추가
     this.isMoveable = false;
