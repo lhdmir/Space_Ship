@@ -14,10 +14,14 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
   constructor(scene) {
     super(scene, 400, 600, "Player");
 
-    this.PLAYER_HP = 100;
+    // this.PLAYER_HP = 100;
+    this.PLAYER_HP = 10;
 
     // 이동 가능한지 체크하는 플래그 추가
     this.isMoveable = false;
+
+    // 플레이어가 살아있는지 체크하는 플래그 추가
+    this.isAlive = true;
 
     //scene.add.existing 함수는 해당 scene에 오브젝트를 추가하는 함수.
     //scene.physics.add.existing 함수는 해당 scene에 추가한 오브젝트를
@@ -144,7 +148,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
       this.play("Die").on(
         "animationcomplete",
         () => {
-          this.destroy();
+          this.isAlive = false;
+          this.setActive(false);
+          this.setAlpha(0);
         },
         this
       ); // 'this'는 콜백 내에서 Enemy1 인스턴스를 참조하기 위해 전달된다.

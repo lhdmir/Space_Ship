@@ -138,12 +138,14 @@ export default class Stage1 extends Phaser.Scene {
     this.bg.tilePositionY -= 2; // 숫자 2는 스크롤 속도를 조절.
 
     // 스폰이 완료되면 실행
-    if (this.player.isMoveable) {
-      // 움직임 관리
-      this.handlePlayerMove();
+    if (this.player.isAlive) {
+      if (this.player.isMoveable) {
+        // 움직임 관리
+        this.handlePlayerMove();
 
-      // 애니메이션 관리
-      this.handlePlayerAnimations();
+        // 애니메이션 관리
+        this.handlePlayerAnimations();
+      }
     }
   }
 
