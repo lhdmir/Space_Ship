@@ -42,13 +42,13 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     // 공격 이벤트
     // 300ms 한번씩 shotBullet()을 호출하는 이벤트를 추가
-    // this.shootEvent = scene.time.addEvent({
-    //   delay: 300,
-    //   callback: () => {
-    //     this.shotBullet();
-    //   },
-    //   loop: true,
-    // });
+    this.shootEvent = scene.time.addEvent({
+      delay: 300,
+      callback: () => {
+        this.shotBullet();
+      },
+      loop: true,
+    });
   }
 
   createPlayerAnimations() {
@@ -122,7 +122,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
   shotBullet() {
     // 스폰이 완료되면 Bullet 생성
-    if (!this.isSpawning) {
+    if (this.isMoveable) {
       // bullet 인스턴스 생성
       let bullet = new Player_Bullet(this.scene, this);
       // bullet 이동속도 설정
