@@ -1,6 +1,8 @@
 import Phaser from "phaser";
 import TitleScene from "./Scene/titleScene.js";
 import Stage1 from "./Scene/stage1.js";
+import Stage2 from "./Scene/stage2.js";
+import gameOverScene from "./Scene/gameOverScene.js";
 
 // Webpack에서 이미지를 참조할 수 있게 import 해준다.
 import Background_Image from "../Asset/background/Space.png";
@@ -16,7 +18,7 @@ const config = {
   type: Phaser.AUTO, // WebGL if available, otherwise Canvas
   width: 800,
   height: 700,
-  scene: [TitleScene, Stage1], // 여기에 Scene 배열을 추가
+  scene: [TitleScene, gameOverScene, Stage1, Stage2], // 여기에 Scene 배열을 추가
   autoCenter: Phaser.Scale.Center.CENTER_HORIZONTALLY,
   pixelArt: true,
   // rendererConfig: {

@@ -42,13 +42,13 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     // 공격 이벤트
     // 300ms 한번씩 shotBullet()을 호출하는 이벤트를 추가
-    this.shootEvent = scene.time.addEvent({
-      delay: 300,
-      callback: () => {
-        this.shotBullet();
-      },
-      loop: true,
-    });
+    // this.shootEvent = scene.time.addEvent({
+    //   delay: 300,
+    //   callback: () => {
+    //     this.shotBullet();
+    //   },
+    //   loop: true,
+    // });
   }
 
   createPlayerAnimations() {
@@ -130,7 +130,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
-  hit(damage) {
+  hit(damage, scene) {
     this.PLAYER_HP -= damage;
 
     // Death
@@ -151,6 +151,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
           this.isAlive = false;
           this.setActive(false);
           this.setAlpha(0);
+          setTimeout(() => {
+            scene.scene.start("gameOverScene");
+          }, 1000);
         },
         this
       ); // 'this'는 콜백 내에서 Enemy1 인스턴스를 참조하기 위해 전달된다.

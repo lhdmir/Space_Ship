@@ -120,7 +120,7 @@ export function collisionEvent(scene) {
     scene.playerGroup,
     (bullet, player) => {
       bullet.destroy(); // 총알 제거
-      player.hit(10); // 플레이어 10 피해
+      player.hit(10, scene); // 플레이어 10 피해
       hitBlink(scene, player); //피격 이펙트
     }
   );
