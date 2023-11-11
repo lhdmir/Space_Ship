@@ -25,6 +25,10 @@ const config = {
   physics: {
     default: "arcade", // arcade라는 물리 엔진을 사용할 것임
   },
+  fps: {
+    target: 60, // 여기서 원하는 최대 프레임 수를 설정하세요
+    forceSetTimeOut: true,
+  },
 };
 
 const game = new Phaser.Game(config);
