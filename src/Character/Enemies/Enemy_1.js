@@ -14,6 +14,7 @@ export default class Enemy1 extends Phaser.Physics.Arcade.Sprite {
 
     // 인스턴스 변수, 각 인스턴스 별로 관리함
     this.ENEMY_HP = 100;
+    this.attackPower = 10;
 
     this.setScale(3);
     this.setAlpha(1);
@@ -39,7 +40,7 @@ export default class Enemy1 extends Phaser.Physics.Arcade.Sprite {
     this.shootEvent = scene.time.addEvent({
       delay: 1000,
       callback: () => {
-        this.shotBullet();
+        this.shotBullet(this.attackPower);
       },
       loop: true,
     });
@@ -88,8 +89,8 @@ export default class Enemy1 extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
-  shotBullet() {
-    let bullet = new Enemy1_Bullet(this.scene, this);
+  shotBullet(damage) {
+    let bullet = new Enemy1_Bullet(this.scene, this, damage);
     bullet.body.velocity.y = +300;
   }
 

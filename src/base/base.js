@@ -108,7 +108,7 @@ export function collisionEvent(scene) {
     scene.enemies,
     (bullet, enemy) => {
       bullet.destroy(); // 총알 제거
-      enemy.hit(10); // 적에게 피해를 줌 (예: 10의 피해)
+      enemy.hit(bullet.damage); // 적에게 피해를 줌 (예: 10의 피해)
       hitBlink(scene, enemy); //피격 이펙트
     }
   );
@@ -120,7 +120,7 @@ export function collisionEvent(scene) {
     scene.playerGroup,
     (bullet, player) => {
       bullet.destroy(); // 총알 제거
-      player.hit(10, scene); // 플레이어 10 피해
+      player.hit(bullet.damage, scene); // 플레이어 10 피해
       hitBlink(scene, player); //피격 이펙트
     }
   );
@@ -130,8 +130,22 @@ export function collisionEvent(scene) {
     scene.player_bullet,
     scene.enemy_bullet,
     (pBullet, eBullet) => {
-      pBullet.destroy();
-      eBullet.destroy();
+      // 데미지가 서로 같다면 상쇄
+      if (pBullet.damage == eBullet.damage) {
+        pBullet.destroy();
+        eBullet.destroy();
+      }
+      // 플레이어가 더 높다면 플레이어의 총알 공격력을 적 데미지만큼 감소시키고
+      // 적 총알은 삭제
+      else if (pBullet.damage > eBullet.damage) {
+        pBullet.damage -= eBullet.damage;
+        eBullet.destroy();
+      }
+      // 반대의 경우
+      else if (eBullet.damage > pBullet.damage) {
+        eBullet.damage -= pBullet.damage;
+        pBullet.destroy();
+      }
     }
   );
 }

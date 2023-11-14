@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 
 export default class Player_Bullet extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, player) {
+  constructor(scene, player, damage) {
     const x = player.x;
     const y = player.y - 40;
     super(scene, x, y, "Bullets");
@@ -14,12 +14,10 @@ export default class Player_Bullet extends Phaser.Physics.Arcade.Sprite {
     this.createPlayerBulletAnimation();
 
     // 총알 초기 설정
-    this.play("Bullet_Level_1");
+    this.initBullet(damage);
     this.setScale(3);
     this.setActive(true);
     this.setVisible(true);
-    // 물리 충돌 사이즈 조정
-    this.setSize(this.width * 0.2, this.height * 0.2, true);
 
     // Bullets 그룹에 오브젝트 추가
     scene.player_bullet.add(this);
@@ -79,5 +77,40 @@ export default class Player_Bullet extends Phaser.Physics.Arcade.Sprite {
       frameRate: 10,
       repeat: -1,
     });
+  }
+
+  initBullet(damage) {
+    switch (damage) {
+      case 10:
+        this.damage = damage;
+        this.play("Bullet_Level_1");
+        // 물리 충돌 사이즈 조정
+        this.setSize(this.width * 0.2, this.height * 0.2, true);
+        break;
+      case 20:
+        this.damage = damage;
+        this.play("Bullet_Level_2");
+        // 물리 충돌 사이즈 조정
+        this.setSize(this.width * 0.25, this.height * 0.2, true);
+        break;
+      case 30:
+        this.damage = damage;
+        this.play("Bullet_Level_3");
+        // 물리 충돌 사이즈 조정
+        this.setSize(this.width * 0.3, this.height * 0.2, true);
+        break;
+      case 40:
+        this.damage = damage;
+        this.play("Bullet_Level_4");
+        // 물리 충돌 사이즈 조정
+        this.setSize(this.width * 0.4, this.height * 0.2, true);
+        break;
+      case 50:
+        this.damage = damage;
+        this.play("Bullet_Level_5");
+        // 물리 충돌 사이즈 조정
+        this.setSize(this.width * 0.5, this.height * 0.2, true);
+        break;
+    }
   }
 }

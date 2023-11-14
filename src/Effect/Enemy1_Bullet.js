@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 
 export default class Enemy1_Bullet extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, player) {
+  constructor(scene, player, damage) {
     const x = player.x;
     const y = player.y + 30;
     super(scene, x, y, "Enemies");
@@ -14,6 +14,7 @@ export default class Enemy1_Bullet extends Phaser.Physics.Arcade.Sprite {
     this.createEnemy1BulletAnimation();
 
     // 총알 초기 설정
+    this.damage = damage;
     this.play("Enemy1Bullet");
     this.setScale(3);
     this.setActive(true);
