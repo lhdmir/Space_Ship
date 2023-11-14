@@ -8,6 +8,7 @@ import {
   createPlayer,
   createEnemyGroup,
   loadAsset,
+  createDeadZone,
 } from "../base/base";
 
 // 방향정의 오브젝트 import
@@ -42,6 +43,9 @@ export default class Stage1 extends Phaser.Scene {
 
     // 충돌 이벤트 생성
     collisionEvent(this);
+
+    // dead zone 생성
+    createDeadZone(this);
 
     // test enemy 생성
     // 아래와 같이 Enemy를 생성할 수 있음

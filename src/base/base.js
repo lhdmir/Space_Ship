@@ -185,3 +185,18 @@ export function createEnemyGroup(scene) {
   // Enemy 그룹 생성
   scene.enemies = scene.physics.add.group();
 }
+
+export function createDeadZone(scene) {
+  scene.deadZone = scene.add.zone(400, 680, 800, 10);
+  scene.physics.world.enable(scene.deadZone);
+
+  scene.physics.add.overlap(
+    scene.deadZone,
+    scene.enemies,
+    (deadZone, enemy) => {
+      enemy.hit(enemy.ENEMY_HP); // 플레이어 10 피해
+      scene.player.hit(enemy.attackPower);
+      hitBlink(scene, scene.player); //피격 이펙트
+    }
+  );
+}
