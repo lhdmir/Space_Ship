@@ -14,10 +14,14 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
   constructor(scene) {
     super(scene, 400, 600, "Player");
 
+    // 플레이어 체력
     this.PLAYER_HP = 100;
 
     // 플레이어 공격력
     this.attackPower = 10;
+
+    // 플레이어 콤보 카운트
+    this.comboCount = 0;
 
     // 이동 가능한지 체크하는 플래그 추가
     this.isMoveable = false;
@@ -44,13 +48,13 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     // 공격 이벤트
     // 300ms 한번씩 shotBullet()을 호출하는 이벤트를 추가
-    // this.shootEvent = scene.time.addEvent({
-    //   delay: 300,
-    //   callback: () => {
-    //     this.shotBullet(this.attackPower);
-    //   },
-    //   loop: true,
-    // });
+    this.shootEvent = scene.time.addEvent({
+      delay: 200,
+      callback: () => {
+        this.shotBullet(this.attackPower);
+      },
+      loop: true,
+    });
   }
 
   createPlayerAnimations() {
@@ -134,6 +138,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
   hit(damage, scene) {
     this.PLAYER_HP -= damage;
+    this.comboCount = 0;
     console.log(this.PLAYER_HP);
 
     // Death
@@ -160,6 +165,13 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         },
         this
       ); // 'this'는 콜백 내에서 Enemy1 인스턴스를 참조하기 위해 전달된다.
+    }
+  }
+
+  update() {
+    if (this.comboCount == 3 && this.attackPower != 50) {
+      this.comboCount = 0;
+      this.attackPower += 10;
     }
   }
 }

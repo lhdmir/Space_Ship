@@ -94,30 +94,35 @@ export default class Enemy1 extends Phaser.Physics.Arcade.Sprite {
     bullet.body.velocity.y = +300;
   }
 
-  hit(damage) {
+  hit(damage, scene) {
     this.ENEMY_HP -= damage;
     // console.log(this.ENEMY_HP);
 
     // Death
     if (this.ENEMY_HP <= 0) {
-      // 인스턴스를 파괴하기 전 타이머 이벤트들을 제거
-      if (this.moveEvent) {
-        this.moveEvent.remove();
-      }
-      if (this.shootEvent) {
-        this.shootEvent.remove();
-      }
-
-      this.body.enable = false; // 물리적 몸체를 비활성화하여 더 이상 충돌하지 않도록 설정.
-
-      // 애니메이션을 재생하고, 애니메이션이 완료되면 'animationcomplete' 이벤트가 발생.
-      this.play("Explosion").on(
-        "animationcomplete",
-        () => {
-          this.destroy();
-        },
-        this
-      ); // 'this'는 콜백 내에서 Enemy1 인스턴스를 참조하기 위해 전달된다.
+      this.death();
+      scene.player.comboCount += 1;
     }
+  }
+
+  death() {
+    // 인스턴스를 파괴하기 전 타이머 이벤트들을 제거
+    if (this.moveEvent) {
+      this.moveEvent.remove();
+    }
+    if (this.shootEvent) {
+      this.shootEvent.remove();
+    }
+
+    this.body.enable = false; // 물리적 몸체를 비활성화하여 더 이상 충돌하지 않도록 설정.
+
+    // 애니메이션을 재생하고, 애니메이션이 완료되면 'animationcomplete' 이벤트가 발생.
+    this.play("Explosion").on(
+      "animationcomplete",
+      () => {
+        this.destroy();
+      },
+      this
+    ); // 'this'는 콜백 내에서 Enemy1 인스턴스를 참조하기 위해 전달된다.
   }
 }

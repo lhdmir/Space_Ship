@@ -54,6 +54,8 @@ export default class Stage1 extends Phaser.Scene {
     this.enemies.add(new Enemy1(this, 100, 50));
     this.enemies.add(new Enemy1(this, 400, 50));
     this.enemies.add(new Enemy1(this, 700, 50));
+    // this.enemies.add(new Enemy1(this, 250, 100));
+    // this.enemies.add(new Enemy1(this, 550, 100));
   }
 
   update() {

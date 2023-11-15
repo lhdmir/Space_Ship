@@ -108,7 +108,7 @@ export function collisionEvent(scene) {
     scene.enemies,
     (bullet, enemy) => {
       bullet.destroy(); // 총알 제거
-      enemy.hit(bullet.damage); // 적에게 피해를 줌 (예: 10의 피해)
+      enemy.hit(bullet.damage, scene); // 적에게 피해를 줌 (예: 10의 피해)
       hitBlink(scene, enemy); //피격 이펙트
     }
   );
@@ -152,7 +152,9 @@ export function collisionEvent(scene) {
 
 export function createPlayer(scene) {
   // 플레이어 생성
-  scene.playerGroup = scene.physics.add.group();
+  scene.playerGroup = scene.physics.add.group({
+    runChildUpdate: true,
+  });
   scene.player = new Player(scene);
   scene.playerGroup.add(scene.player);
   scene.player.setCollideWorldBounds(true);
@@ -194,7 +196,7 @@ export function createDeadZone(scene) {
     scene.deadZone,
     scene.enemies,
     (deadZone, enemy) => {
-      enemy.hit(enemy.ENEMY_HP); // 플레이어 10 피해
+      enemy.death();
       scene.player.hit(enemy.attackPower);
       hitBlink(scene, scene.player); //피격 이펙트
     }
