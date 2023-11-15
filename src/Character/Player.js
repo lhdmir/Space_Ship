@@ -11,23 +11,22 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
   // 플레이어의 속도 설정
   static PLAYER_SPEED = 3;
 
-  constructor(scene) {
+  constructor(scene, attackPower, comboCount) {
     super(scene, 400, 600, "Player");
 
     // 플레이어 체력
     this.PLAYER_HP = 100;
 
     // 플레이어 공격력
-    this.attackPower = 10;
+    this.attackPower = attackPower;
 
     // 플레이어 콤보 카운트
-    this.comboCount = 0;
+    this.comboCount = comboCount;
+
+    console.log(this.attackPower, this.comboCount);
 
     // 이동 가능한지 체크하는 플래그 추가
     this.isMoveable = false;
-
-    // 플레이어가 살아있는지 체크하는 플래그 추가
-    this.isAlive = true;
 
     //scene.add.existing 함수는 해당 scene에 오브젝트를 추가하는 함수.
     //scene.physics.add.existing 함수는 해당 scene에 추가한 오브젝트를
@@ -49,7 +48,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     // 공격 이벤트
     // 300ms 한번씩 shotBullet()을 호출하는 이벤트를 추가
     this.shootEvent = scene.time.addEvent({
-      delay: 200,
+      delay: 300,
       callback: () => {
         this.shotBullet(this.attackPower);
       },
@@ -139,7 +138,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
   hit(damage, scene) {
     this.PLAYER_HP -= damage;
     this.comboCount = 0;
-    console.log(this.PLAYER_HP);
+    this.attackPower = 10;
 
     // Death
     if (this.PLAYER_HP <= 0) {
@@ -156,7 +155,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
       this.play("Die").on(
         "animationcomplete",
         () => {
-          this.isAlive = false;
           this.setActive(false);
           this.setAlpha(0);
           setTimeout(() => {

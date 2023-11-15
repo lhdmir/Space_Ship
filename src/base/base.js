@@ -115,15 +115,15 @@ export function collisionEvent(scene) {
 
   // Enemy의 총알 그룹에 있는 객체와 플레이어가 충돌시
   // 실행할 물리이벤트 등록
-  scene.physics.add.overlap(
-    scene.enemy_bullet,
-    scene.playerGroup,
-    (bullet, player) => {
-      bullet.destroy(); // 총알 제거
-      player.hit(bullet.damage, scene); // 플레이어 10 피해
-      hitBlink(scene, player); //피격 이펙트
-    }
-  );
+  // scene.physics.add.overlap(
+  //   scene.enemy_bullet,
+  //   scene.playerGroup,
+  //   (bullet, player) => {
+  //     bullet.destroy(); // 총알 제거
+  //     player.hit(bullet.damage, scene); // 플레이어 10 피해
+  //     hitBlink(scene, player); //피격 이펙트
+  //   }
+  // );
 
   // Bullet끼리 충돌시 상쇄
   scene.physics.add.overlap(
@@ -150,12 +150,12 @@ export function collisionEvent(scene) {
   );
 }
 
-export function createPlayer(scene) {
+export function createPlayer(scene, attackPower, comboCount) {
   // 플레이어 생성
   scene.playerGroup = scene.physics.add.group({
     runChildUpdate: true,
   });
-  scene.player = new Player(scene);
+  scene.player = new Player(scene, attackPower, comboCount);
   scene.playerGroup.add(scene.player);
   scene.player.setCollideWorldBounds(true);
 
@@ -201,4 +201,24 @@ export function createDeadZone(scene) {
       hitBlink(scene, scene.player); //피격 이펙트
     }
   );
+}
+
+export function clearStage(scene, stage) {
+  // 플레이어 데이터 저장
+  let playerData = {
+    attackPower: scene.player.attackPower,
+    comboCount: scene.player.comboCount,
+  };
+  scene.game.registry.set("playerData", playerData);
+
+  scene.player.isMoveable = false;
+  setTimeout(() => {
+    scene.player.play("Clear").on("animationcomplete", () => {
+      scene.player.setActive(false);
+      scene.player.setAlpha(0);
+      setTimeout(() => {
+        scene.scene.start(stage);
+      }, 1000);
+    });
+  }, 1000);
 }

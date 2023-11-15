@@ -9,6 +9,7 @@ import {
   createEnemyGroup,
   loadAsset,
   createDeadZone,
+  clearStage,
 } from "../base/base";
 
 // 방향정의 오브젝트 import
@@ -36,7 +37,7 @@ export default class Stage1 extends Phaser.Scene {
     assignKeys(this);
 
     // 플레이어 생성
-    createPlayer(this);
+    createPlayer(this, 10, 0);
 
     // 적 생성
     createEnemyGroup(this);
@@ -61,13 +62,12 @@ export default class Stage1 extends Phaser.Scene {
   update() {
     this.bg.tilePositionY -= 2; // 숫자 2는 스크롤 속도를 조절.
 
-    if (this.enemies.getChildren().length === 0) {
-      // 그룹이 비어 있습니다.
-      this.scene.start("Stage2");
+    if (this.enemies.getChildren().length === 0 && this.player.isMoveable) {
+      clearStage(this, "Stage2");
     }
 
     // 스폰이 완료되면 실행
-    if (this.player.isMoveable && this.player.isAlive) {
+    if (this.player.isMoveable) {
       // 움직임 관리
       this.handlePlayerMove();
 

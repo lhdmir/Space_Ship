@@ -8,6 +8,8 @@ import {
   createPlayer,
   createEnemyGroup,
   loadAsset,
+  createDeadZone,
+  clearStage,
 } from "../base/base";
 
 // 방향정의 오브젝트 import
@@ -26,7 +28,9 @@ export default class Stage2 extends Phaser.Scene {
   }
 
   create() {
-    // this.physics.world.createDebugGraphic();
+    this.physics.world.createDebugGraphic();
+
+    let playerData = this.game.registry.get("playerData");
 
     // background 생성
     createBackground(this);
@@ -35,7 +39,7 @@ export default class Stage2 extends Phaser.Scene {
     assignKeys(this);
 
     // 플레이어 생성
-    createPlayer(this);
+    createPlayer(this, playerData.attackPower, playerData.comboCount);
 
     // 적 생성
     createEnemyGroup(this);
@@ -43,19 +47,29 @@ export default class Stage2 extends Phaser.Scene {
     // 충돌 이벤트 생성
     collisionEvent(this);
 
+    // dead zone 생성
+    createDeadZone(this);
+
     // test enemy 생성
     // 아래와 같이 Enemy를 생성할 수 있음
     // this.enemy1 = new Enemy1(this, 700, 50);
     // this.enemies.add(this.enemy1);
-    this.enemies.add(new Enemy1(this, 250, 50));
-    this.enemies.add(new Enemy1(this, 550, 50));
+    // this.enemies.add(new Enemy1(this, 100, 50));
+    // this.enemies.add(new Enemy1(this, 400, 50));
+    // this.enemies.add(new Enemy1(this, 700, 50));
+    this.enemies.add(new Enemy1(this, 250, 100));
+    this.enemies.add(new Enemy1(this, 550, 100));
   }
 
   update() {
     this.bg.tilePositionY -= 2; // 숫자 2는 스크롤 속도를 조절.
 
+    if (this.enemies.getChildren().length === 0 && this.player.isMoveable) {
+      clearStage(this, "TitleScene");
+    }
+
     // 스폰이 완료되면 실행
-    if (this.player.isMoveable && this.player.isAlive) {
+    if (this.player.isMoveable) {
       // 움직임 관리
       this.handlePlayerMove();
 
