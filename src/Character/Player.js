@@ -15,7 +15,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     super(scene, 400, 600, "Player");
 
     // 플레이어 체력
-    this.PLAYER_HP = 10;
+    this.PLAYER_HP = 100;
 
     // 플레이어 공격력
     this.attackPower = attackPower;
@@ -48,7 +48,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     // 공격 이벤트
     // 300ms 한번씩 shotBullet()을 호출하는 이벤트를 추가
     this.shootEvent = scene.time.addEvent({
-      delay: 200,
+      delay: 300,
       callback: () => {
         this.shotBullet(this.attackPower);
       },

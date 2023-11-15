@@ -19,9 +19,9 @@ import { Direction } from "../base/base";
 // Enemy 클래스 import
 import Enemy1 from "../Character/Enemies/Enemy_1";
 
-export default class Stage2 extends Phaser.Scene {
+export default class Stage3 extends Phaser.Scene {
   constructor() {
-    super({ key: "Stage2" });
+    super({ key: "Stage3" });
   }
 
   preload() {
@@ -59,9 +59,9 @@ export default class Stage2 extends Phaser.Scene {
     // 아래와 같이 Enemy를 생성할 수 있음
     // this.enemy1 = new Enemy1(this, 700, 50);
     // this.enemies.add(this.enemy1);
-    // this.enemies.add(new Enemy1(this, 100, 50));
-    // this.enemies.add(new Enemy1(this, 400, 50));
-    // this.enemies.add(new Enemy1(this, 700, 50));
+    this.enemies.add(new Enemy1(this, 100, 50));
+    this.enemies.add(new Enemy1(this, 400, 50));
+    this.enemies.add(new Enemy1(this, 700, 50));
     this.enemies.add(new Enemy1(this, 250, 100));
     this.enemies.add(new Enemy1(this, 550, 100));
   }
@@ -70,7 +70,7 @@ export default class Stage2 extends Phaser.Scene {
     this.bg.tilePositionY -= 2; // 숫자 2는 스크롤 속도를 조절.
 
     if (this.enemies.getChildren().length === 0 && this.player.isMoveable) {
-      clearStage(this, "Stage3");
+      clearStage(this, "gameClearScene");
     }
 
     // 스폰이 완료되면 실행

@@ -189,7 +189,7 @@ export function createEnemyGroup(scene) {
 }
 
 export function createDeadZone(scene) {
-  scene.deadZone = scene.add.zone(400, 680, 800, 10);
+  scene.deadZone = scene.add.zone(400, 720, 800, 10);
   scene.physics.world.enable(scene.deadZone);
 
   scene.physics.add.overlap(

@@ -67,8 +67,7 @@ export default class Stage1 extends Phaser.Scene {
     this.bg.tilePositionY -= 2; // 숫자 2는 스크롤 속도를 조절.
 
     if (this.enemies.getChildren().length === 0 && this.player.isMoveable) {
-      // clearStage(this, "Stage2");
-      clearStage(this, "gameClearScene");
+      clearStage(this, "Stage2");
     }
 
     // 스폰이 완료되면 실행

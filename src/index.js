@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import TitleScene from "./Scene/titleScene.js";
 import Stage1 from "./Scene/stage1.js";
 import Stage2 from "./Scene/stage2.js";
+import Stage3 from "./Scene/stage3.js";
 import gameOverScene from "./Scene/gameOverScene.js";
 import gameClearScene from "./Scene/gameClearScene.js";
 
@@ -18,8 +19,8 @@ import Boss_Explosions_Image from "../Asset/Enemy/Boss_Explosions.png";
 const config = {
   type: Phaser.AUTO, // WebGL if available, otherwise Canvas
   width: 800,
-  height: 700,
-  scene: [TitleScene, gameOverScene, gameClearScene, Stage1, Stage2], // 여기에 Scene 배열을 추가
+  height: 750,
+  scene: [TitleScene, gameOverScene, gameClearScene, Stage1, Stage2, Stage3], // 여기에 Scene 배열을 추가
   autoCenter: Phaser.Scale.Center.CENTER_HORIZONTALLY,
   pixelArt: true,
   // rendererConfig: {
