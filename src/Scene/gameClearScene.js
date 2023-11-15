@@ -2,9 +2,9 @@ import Phaser from "phaser";
 
 import { createBackground } from "../base/base";
 
-export default class gameOverScene extends Phaser.Scene {
+export default class gameClearScene extends Phaser.Scene {
   constructor() {
-    super({ key: "gameOverScene" });
+    super({ key: "gameClearScene" });
   }
 
   preload() {
@@ -16,7 +16,7 @@ export default class gameOverScene extends Phaser.Scene {
 
     createBackground(this);
 
-    this.createGameOverText();
+    this.createGameClearText();
     this.createRestartText();
     this.createScoreText();
 
@@ -33,17 +33,18 @@ export default class gameOverScene extends Phaser.Scene {
     }
   }
 
-  createGameOverText() {
-    let gameOverText = this.add
-      .text(400, 250, "Game Over", { fontSize: "120px", color: "#990000" })
+  createGameClearText() {
+    let gameClearText = this.add
+      .text(400, 250, "Game Clear", { fontSize: "110px", color: "#fff" })
       .setOrigin(0.5);
 
     this.tweens.add({
-      targets: gameOverText, // 애니메이션을 적용할 대상
+      targets: gameClearText, // 애니메이션을 적용할 대상
       alpha: { start: 0, to: 1 }, // 시작과 끝의 투명도 값. 1은 완전 불투명, 0은 완전 투명
       duration: 5000, // 애니메이션의 지속 시간 (밀리초)
       ease: "Linear", // 가속도 함수. 여기서는 일정한 속도로 변환
-      repeat: 0, // 무한히 반복. 0을 설정하면 반복하지 않음
+      repeat: -1, // 무한히 반복. 0을 설정하면 반복하지 않음
+      yoyo: true,
     });
   }
 

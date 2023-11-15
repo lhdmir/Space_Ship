@@ -62,6 +62,15 @@ export default class TitleScene extends Phaser.Scene {
       .text(400, 450, "Start", { fontSize: "28px", color: "#fff" })
       .setOrigin(0.5);
 
+    this.tweens.add({
+      targets: playButton, // 애니메이션을 적용할 대상
+      alpha: { start: 1, to: 0 }, // 시작과 끝의 투명도 값. 1은 완전 불투명, 0은 완전 투명
+      duration: 2000, // 애니메이션의 지속 시간 (밀리초)
+      ease: "Linear", // 가속도 함수. 여기서는 일정한 속도로 변환
+      repeat: -1, // 무한히 반복. 0을 설정하면 반복하지 않음
+      yoyo: true, // 애니메이션을 반대 방향으로도 재생. 여기서는 불투명 -> 투명 -> 불투명 순으로 재생됨
+    });
+
     // Start Text 깜빡이는 효과
     // blinkingTween 오브젝트 생성.
     let blinkingTween = this.tweens.create({

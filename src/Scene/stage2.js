@@ -10,6 +10,7 @@ import {
   loadAsset,
   createDeadZone,
   clearStage,
+  createScoreText,
 } from "../base/base";
 
 // 방향정의 오브젝트 import
@@ -30,7 +31,9 @@ export default class Stage2 extends Phaser.Scene {
   create() {
     this.physics.world.createDebugGraphic();
 
+    // 데이터 로드
     let playerData = this.game.registry.get("playerData");
+    this.score = this.game.registry.get("score");
 
     // background 생성
     createBackground(this);
@@ -50,6 +53,8 @@ export default class Stage2 extends Phaser.Scene {
     // dead zone 생성
     createDeadZone(this);
 
+    createScoreText(this);
+
     // test enemy 생성
     // 아래와 같이 Enemy를 생성할 수 있음
     // this.enemy1 = new Enemy1(this, 700, 50);
@@ -65,7 +70,7 @@ export default class Stage2 extends Phaser.Scene {
     this.bg.tilePositionY -= 2; // 숫자 2는 스크롤 속도를 조절.
 
     if (this.enemies.getChildren().length === 0 && this.player.isMoveable) {
-      clearStage(this, "TitleScene");
+      clearStage(this, "gameClearScene");
     }
 
     // 스폰이 완료되면 실행

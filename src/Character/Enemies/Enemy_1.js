@@ -101,7 +101,11 @@ export default class Enemy1 extends Phaser.Physics.Arcade.Sprite {
     // Death
     if (this.ENEMY_HP <= 0) {
       this.death();
+      // hit() 으로 인한 사망이면
+      // 플레이어의 콤보와 스코어를 증가
       scene.player.comboCount += 1;
+      scene.score += 10;
+      scene.scoreText.setText("Score: " + scene.score);
     }
   }
 

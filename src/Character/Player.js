@@ -9,13 +9,13 @@ import Player_Bullet from "../Effect/Player_Bullet";
 // 플레이어 클래스 생성
 export default class Player extends Phaser.Physics.Arcade.Sprite {
   // 플레이어의 속도 설정
-  static PLAYER_SPEED = 3;
+  static PLAYER_SPEED = 4;
 
-  constructor(scene, attackPower, comboCount) {
+  constructor(scene, attackPower = 10, comboCount = 0) {
     super(scene, 400, 600, "Player");
 
     // 플레이어 체력
-    this.PLAYER_HP = 100;
+    this.PLAYER_HP = 10;
 
     // 플레이어 공격력
     this.attackPower = attackPower;
@@ -48,7 +48,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     // 공격 이벤트
     // 300ms 한번씩 shotBullet()을 호출하는 이벤트를 추가
     this.shootEvent = scene.time.addEvent({
-      delay: 300,
+      delay: 200,
       callback: () => {
         this.shotBullet(this.attackPower);
       },
@@ -143,6 +143,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     // Death
     if (this.PLAYER_HP <= 0) {
       this.isMoveable = false;
+      scene.game.registry.set("score", scene.score);
 
       // 인스턴스를 파괴하기 전 타이머 이벤트들을 제거
       if (this.shootEvent) {

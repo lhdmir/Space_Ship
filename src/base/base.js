@@ -115,15 +115,15 @@ export function collisionEvent(scene) {
 
   // Enemy의 총알 그룹에 있는 객체와 플레이어가 충돌시
   // 실행할 물리이벤트 등록
-  // scene.physics.add.overlap(
-  //   scene.enemy_bullet,
-  //   scene.playerGroup,
-  //   (bullet, player) => {
-  //     bullet.destroy(); // 총알 제거
-  //     player.hit(bullet.damage, scene); // 플레이어 10 피해
-  //     hitBlink(scene, player); //피격 이펙트
-  //   }
-  // );
+  scene.physics.add.overlap(
+    scene.enemy_bullet,
+    scene.playerGroup,
+    (bullet, player) => {
+      bullet.destroy(); // 총알 제거
+      player.hit(bullet.damage, scene); // 플레이어 10 피해
+      hitBlink(scene, player); //피격 이펙트
+    }
+  );
 
   // Bullet끼리 충돌시 상쇄
   scene.physics.add.overlap(
@@ -211,6 +211,8 @@ export function clearStage(scene, stage) {
   };
   scene.game.registry.set("playerData", playerData);
 
+  scene.game.registry.set("score", scene.score);
+
   scene.player.isMoveable = false;
   setTimeout(() => {
     scene.player.play("Clear").on("animationcomplete", () => {
@@ -221,4 +223,11 @@ export function clearStage(scene, stage) {
       }, 1000);
     });
   }, 1000);
+}
+
+export function createScoreText(scene) {
+  scene.scoreText = scene.add.text(16, 650, "Score: " + scene.score, {
+    fontSize: "24px",
+    fill: "#fff",
+  });
 }
