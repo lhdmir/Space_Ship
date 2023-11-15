@@ -41,7 +41,11 @@ export default class TitleScene extends Phaser.Scene {
   createTitleText() {
     // Title text: Space Ship 표시
     let titleText = this.add
-      .text(400, 250, "Space Ship", { fontSize: "100px", color: "#fff" })
+      .text(400, 250, "Space Ship", {
+        fontFamily: "NeoDunggeunmo Code",
+        fontSize: "100px",
+        color: "#fff",
+      })
       .setOrigin(0.5);
 
     // Title Text 깜빡거리는 효과 - 트윈 생성
@@ -59,7 +63,11 @@ export default class TitleScene extends Phaser.Scene {
     // Start 텍스트 생성
     // (400,400) 위치에 배치, setOrigin(0.5)로 중앙에 정렬
     let playButton = this.add
-      .text(400, 450, "Start", { fontSize: "28px", color: "#fff" })
+      .text(400, 450, "Start", {
+        fontFamily: "NeoDunggeunmo Code",
+        fontSize: "28px",
+        color: "#fff",
+      })
       .setOrigin(0.5);
 
     this.tweens.add({

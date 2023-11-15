@@ -35,7 +35,11 @@ export default class gameClearScene extends Phaser.Scene {
 
   createGameClearText() {
     let gameClearText = this.add
-      .text(400, 250, "Game Clear", { fontSize: "110px", color: "#fff" })
+      .text(400, 250, "Game Clear", {
+        fontFamily: "NeoDunggeunmo Code",
+        fontSize: "110px",
+        color: "#fff",
+      })
       .setOrigin(0.5);
 
     this.tweens.add({
@@ -51,6 +55,7 @@ export default class gameClearScene extends Phaser.Scene {
   createRestartText() {
     let restartText = this.add
       .text(400, 500, "Press the Enter key to Title", {
+        fontFamily: "NeoDunggeunmo Code",
         fontSize: "28px",
         color: "#fff",
       })
@@ -81,6 +86,7 @@ export default class gameClearScene extends Phaser.Scene {
   createScoreText() {
     let scoreText = this.add
       .text(400, 400, "Score : " + this.score, {
+        fontFamily: "NeoDunggeunmo Code",
         fontSize: "28px",
         color: "#fff",
       })

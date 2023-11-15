@@ -35,7 +35,11 @@ export default class gameOverScene extends Phaser.Scene {
 
   createGameOverText() {
     let gameOverText = this.add
-      .text(400, 250, "Game Over", { fontSize: "120px", color: "#990000" })
+      .text(400, 250, "Game Over", {
+        fontFamily: "NeoDunggeunmo Code",
+        fontSize: "120px",
+        color: "#990000",
+      })
       .setOrigin(0.5);
 
     this.tweens.add({
@@ -50,6 +54,7 @@ export default class gameOverScene extends Phaser.Scene {
   createRestartText() {
     let restartText = this.add
       .text(400, 500, "Press the Enter key to Title", {
+        fontFamily: "NeoDunggeunmo Code",
         fontSize: "28px",
         color: "#fff",
       })
@@ -80,6 +85,7 @@ export default class gameOverScene extends Phaser.Scene {
   createScoreText() {
     let scoreText = this.add
       .text(400, 400, "Score : " + this.score, {
+        fontFamily: "NeoDunggeunmo Code",
         fontSize: "28px",
         color: "#fff",
       })

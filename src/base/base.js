@@ -227,6 +227,7 @@ export function clearStage(scene, stage) {
 
 export function createScoreText(scene) {
   scene.scoreText = scene.add.text(16, 650, "Score: " + scene.score, {
+    fontFamily: "NeoDunggeunmo Code",
     fontSize: "24px",
     fill: "#fff",
   });
