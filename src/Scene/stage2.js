@@ -42,7 +42,12 @@ export default class Stage2 extends Phaser.Scene {
     assignKeys(this);
 
     // 플레이어 생성
-    createPlayer(this, playerData.attackPower, playerData.comboCount);
+    createPlayer(
+      this,
+      playerData.currentHp,
+      playerData.attackPower,
+      playerData.comboCount
+    );
 
     // 적 생성
     createEnemyGroup(this);

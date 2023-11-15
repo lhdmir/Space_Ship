@@ -206,6 +206,7 @@ export function createDeadZone(scene) {
 export function clearStage(scene, stage) {
   // 플레이어 데이터 저장
   let playerData = {
+    currentHp: scene.player.currentHp,
     attackPower: scene.player.attackPower,
     comboCount: scene.player.comboCount,
   };
@@ -214,6 +215,10 @@ export function clearStage(scene, stage) {
   scene.game.registry.set("score", scene.score);
 
   scene.player.isMoveable = false;
+
+  // 체력바 비활성화
+  scene.player.healthBar.setAlpha(0);
+
   setTimeout(() => {
     scene.player.play("Clear").on("animationcomplete", () => {
       scene.player.setActive(false);

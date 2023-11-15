@@ -6,17 +6,29 @@ import { Direction } from "../base/base";
 // Bullet 클래스 import
 import Player_Bullet from "../Effect/Player_Bullet";
 
+import HealthBar from "../UI/HealthBar";
+
 // 플레이어 클래스 생성
 export default class Player extends Phaser.Physics.Arcade.Sprite {
   // 플레이어의 속도 설정
   static PLAYER_SPEED = 4;
+  static PLAYER_MAX_HP = 100;
+  static PLAYER_ATTACK_POWER = 10;
 
-  constructor(scene, attackPower = 10, comboCount = 0) {
+  constructor(
+    scene,
+    currentHp = Player.PLAYER_MAX_HP,
+    attackPower = Player.PLAYER_ATTACK_POWER,
+    comboCount = 0
+  ) {
     super(scene, 400, 600, "Player");
 
     // 플레이어 체력
-    this.PLAYER_MAX_HP = 100;
-    this.PLAYER_HP = this.PLAYER_MAX_HP;
+    // this.PLAYER_MAX_HP = 100;
+    this.currentHp = currentHp;
+
+    // HP Bar
+    this.healthBar = new HealthBar(scene, this);
 
     // 플레이어 공격력
     this.attackPower = attackPower;
@@ -124,6 +136,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.x += Player.PLAYER_SPEED;
         break;
     }
+    this.healthBar.positionUpdate(this);
   }
 
   shotBullet(damage) {
@@ -137,12 +150,15 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   hit(damage, scene) {
-    this.PLAYER_HP -= damage;
+    this.currentHp -= damage;
     this.comboCount = 0;
     this.attackPower = 10;
 
+    //healthBar draw
+    this.healthBar.decrease(damage);
+
     // Death
-    if (this.PLAYER_HP <= 0) {
+    if (this.currentHp <= 0) {
       this.isMoveable = false;
 
       // 인스턴스를 파괴하기 전 타이머 이벤트들을 제거
