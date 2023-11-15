@@ -1,13 +1,14 @@
 import Phaser from "phaser";
 
 import Enemy1_Bullet from "../../Effect/Enemy1_Bullet";
+import { spawnEnemy } from "../../base/base";
 
 export default class Enemy1 extends Phaser.Physics.Arcade.Sprite {
   // 클래스 변수, 모든 인스턴스가 해당 변수를 공유할 수 있다
   static ENEMY_SPEED = 30;
 
   constructor(scene, x, y) {
-    super(scene, x, y, "Enemies");
+    super(scene, x, -50, "Enemies");
 
     scene.add.existing(this);
     scene.physics.add.existing(this);
@@ -15,6 +16,7 @@ export default class Enemy1 extends Phaser.Physics.Arcade.Sprite {
     // 인스턴스 변수, 각 인스턴스 별로 관리함
     this.ENEMY_HP = 100;
     this.attackPower = 10;
+    this.isMoveable = false;
 
     this.setScale(3);
     this.setAlpha(1);
@@ -24,6 +26,8 @@ export default class Enemy1 extends Phaser.Physics.Arcade.Sprite {
     this.setSize(this.width * 0.65, this.height * 0.45, true);
 
     this.createEnemy1Animations();
+
+    spawnEnemy(scene, this, x, y);
 
     this.play("Move");
 
@@ -73,25 +77,29 @@ export default class Enemy1 extends Phaser.Physics.Arcade.Sprite {
   }
 
   move() {
-    // 플레이어와 적의 좌표차이
-    let x = this.scene.player.x - this.x;
+    if (this.isMoveable) {
+      // 플레이어와 적의 좌표차이
+      let x = this.scene.player.x - this.x;
 
-    // player와 x 좌표가 30이상 차이나지 않는다면
-    // x좌표는 고정하고 y좌표만 이동
-    if (Math.abs(x) < 30) {
-      this.y += 30;
-    } else if (x < 0) {
-      this.x -= Enemy1.ENEMY_SPEED;
-      this.y += 30;
-    } else if (x > 0) {
-      this.x += Enemy1.ENEMY_SPEED;
-      this.y += 30;
+      // player와 x 좌표가 30이상 차이나지 않는다면
+      // x좌표는 고정하고 y좌표만 이동
+      if (Math.abs(x) < 30) {
+        this.y += 30;
+      } else if (x < 0) {
+        this.x -= Enemy1.ENEMY_SPEED;
+        this.y += 30;
+      } else if (x > 0) {
+        this.x += Enemy1.ENEMY_SPEED;
+        this.y += 30;
+      }
     }
   }
 
   shotBullet(damage) {
-    let bullet = new Enemy1_Bullet(this.scene, this, damage);
-    bullet.body.velocity.y = +300;
+    if (this.isMoveable) {
+      let bullet = new Enemy1_Bullet(this.scene, this, damage);
+      bullet.body.velocity.y = +300;
+    }
   }
 
   hit(damage, scene) {

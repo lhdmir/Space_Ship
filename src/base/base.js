@@ -232,3 +232,18 @@ export function createScoreText(scene) {
     fill: "#fff",
   });
 }
+
+export function spawnEnemy(scene, enemy, x, y) {
+  scene.tweens.add({
+    targets: enemy,
+    x: x,
+    y: y,
+    ease: "Power1", // 움직임의 속도 곡선
+    duration: 2000, // 2000 밀리초 동안 진행
+    repeat: 0, // 반복 횟수 (0은 반복하지 않음)
+    yoyo: false, // 원래 위치로 돌아갈지 여부
+    onComplete: () => {
+      enemy.isMoveable = true;
+    },
+  });
+}
