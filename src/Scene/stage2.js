@@ -29,7 +29,7 @@ export default class Stage2 extends Phaser.Scene {
   }
 
   create() {
-    this.physics.world.createDebugGraphic();
+    // this.physics.world.createDebugGraphic();
 
     // 데이터 로드
     let playerData = this.game.registry.get("playerData");
