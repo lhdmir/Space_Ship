@@ -10,9 +10,16 @@ import Player_Bullet from "../Effect/Player_Bullet";
 export default class Player extends Phaser.Physics.Arcade.Sprite {
   // 플레이어의 속도 설정
   static PLAYER_SPEED = 4;
+  static instance;
 
   constructor(scene, attackPower = 10, comboCount = 0) {
     super(scene, 400, 600, "Player");
+
+    // Singleton 적용
+    if (Player.instance) {
+      return Player.instance;
+    }
+    Player.instance = this;
 
     // 플레이어 체력
     this.PLAYER_HP = 100;
