@@ -15,7 +15,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     super(scene, 400, 600, "Player");
 
     // 플레이어 체력
-    this.PLAYER_HP = 100;
+    this.PLAYER_MAX_HP = 100;
+    this.PLAYER_HP = this.PLAYER_MAX_HP;
 
     // 플레이어 공격력
     this.attackPower = attackPower;
