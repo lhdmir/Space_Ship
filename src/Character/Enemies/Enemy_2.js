@@ -1,11 +1,12 @@
 import Phaser from "phaser";
+import Enemy2_Bullet1 from "../../Effect/Enemy2_Bullet1";
 
 export default class Enemy2 extends Phaser.Physics.Arcade.Sprite {
   // 클래스 변수(프로퍼티), 모든 인스턴스가 해당 변수를 공유할 수 있다
   static ENEMY_MOVE_DELAY = 3000;
   static ENEMY_MOVE_DISTANCE = 30;
   static ENEMY_MAX_HP = 50;
-  static ENEMY_ATTACK_POWER = 10;
+  static ENEMY_ATTACK_POWER = 20;
   static ENEMY_ATTACK_SPEED = 1000;
 
   constructor(scene, x, y) {
@@ -119,6 +120,7 @@ export default class Enemy2 extends Phaser.Physics.Arcade.Sprite {
         removeOnComplete: true,
         onComplete: () => {
           this.play("Move");
+          this.shotBullet(this.attackPower);
         },
       });
     }
@@ -126,8 +128,8 @@ export default class Enemy2 extends Phaser.Physics.Arcade.Sprite {
 
   shotBullet(damage) {
     if (this.isMoveable) {
-      let bullet = new Enemy1_Bullet(this.scene, this, damage);
-      bullet.body.velocity.y = +300;
+      let bullet = new Enemy2_Bullet1(this.scene, this, damage);
+      bullet.body.velocity.y = +200;
     }
   }
 

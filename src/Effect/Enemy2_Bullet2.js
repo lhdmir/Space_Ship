@@ -1,9 +1,9 @@
 import Phaser from "phaser";
 
-export default class Enemy1_Bullet extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, enemy, damage) {
-    const x = enemy.x;
-    const y = enemy.y + 30;
+export default class Enemy2_Bullet2 extends Phaser.Physics.Arcade.Sprite {
+  constructor(scene, firstBullet, direction, damage) {
+    const x = firstBullet.x;
+    const y = firstBullet.y;
     super(scene, x, y, "Enemies");
 
     // 현재 씬에 총알 추가
@@ -11,14 +11,20 @@ export default class Enemy1_Bullet extends Phaser.Physics.Arcade.Sprite {
     scene.physics.world.enableBody(this);
 
     // Bullet 애니메이션 생성
-    this.createEnemy1BulletAnimation();
+    this.createEnemy2_BulletAnimation2();
 
     // 총알 초기 설정
     this.damage = damage;
-    this.play("Enemy1Bullet");
+    this.play("Enemy2_Bullet2");
     this.setScale(3);
     this.setActive(true);
     this.setVisible(true);
+
+    if (direction == 1) {
+      this.scaleX = 1;
+    } else if (direction == -1) {
+      this.scaleX = -1;
+    }
 
     // 물리 충돌 사이즈 조정
     this.setSize(this.width * 0.2, this.height * 0.2, true);
@@ -35,12 +41,12 @@ export default class Enemy1_Bullet extends Phaser.Physics.Arcade.Sprite {
   }
 
   // Bullet 애니메이션 생성
-  createEnemy1BulletAnimation() {
+  createEnemy2_BulletAnimation2() {
     this.anims.create({
-      key: "Enemy1Bullet",
+      key: "Enemy2_Bullet2",
       frames: this.anims.generateFrameNumbers("Enemies", {
-        start: 6,
-        end: 9,
+        start: 28,
+        end: 29,
       }),
       frameRate: 10,
       repeat: -1,

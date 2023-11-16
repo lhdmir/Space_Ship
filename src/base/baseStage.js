@@ -12,8 +12,6 @@ import Player from "../Character/Player";
 // Player_Bullet Class import
 import Player_Bullet from "../Effect/Player_Bullet";
 
-import Enemy1_Bullet from "../Effect/Enemy1_Bullet";
-
 // Default Stage Class
 export default class BaseStage extends Phaser.Scene {
   constructor(key) {
