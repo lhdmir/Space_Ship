@@ -34,7 +34,7 @@ export default class Enemy1 extends Phaser.Physics.Arcade.Sprite {
     // 물리 충돌 사이즈 조정
     this.setSize(this.width * 0.65, this.height * 0.45, true);
 
-    scene.spawnEnemy(this, x, y);
+    this.scene.spawnEnemy(this, x, y);
 
     // 0.1초에 한번씩 움직이는 이벤트 추가
     this.moveEvent = scene.time.addEvent({
@@ -94,7 +94,7 @@ export default class Enemy1 extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
-  hit(damage, scene) {
+  hit(damage) {
     this.currentHp -= damage;
 
     // Death
