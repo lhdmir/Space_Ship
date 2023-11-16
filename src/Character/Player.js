@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 
 // 방향정의 오브젝트 import
-import { Direction } from "../base/base";
+import { Direction } from "../base/baseModule";
 
 // Bullet 클래스 import
 import Player_Bullet from "../Effect/Player_Bullet";
@@ -14,6 +14,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
   static PLAYER_SPEED = 4;
   static PLAYER_MAX_HP = 100;
   static PLAYER_ATTACK_POWER = 10;
+  static PLAYER_ATTACK_SPEED = 300;
 
   constructor(
     scene,
@@ -24,7 +25,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     super(scene, 400, 600, "Player");
 
     // 플레이어 체력
-    // this.PLAYER_MAX_HP = 100;
     this.currentHp = currentHp;
 
     // HP Bar
@@ -35,8 +35,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     // 플레이어 콤보 카운트
     this.comboCount = comboCount;
-
-    console.log(this.attackPower, this.comboCount);
 
     // 이동 가능한지 체크하는 플래그 추가
     this.isMoveable = false;
@@ -61,7 +59,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     // 공격 이벤트
     // 300ms 한번씩 shotBullet()을 호출하는 이벤트를 추가
     this.shootEvent = scene.time.addEvent({
-      delay: 300,
+      delay: Player.PLAYER_ATTACK_SPEED,
       callback: () => {
         this.shotBullet(this.attackPower);
       },
@@ -165,6 +163,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
       if (this.shootEvent) {
         this.shootEvent.remove();
       }
+
+      // 체력바 비활성화
+      this.healthBar.setAlpha(0);
 
       this.body.enable = false; // 물리적 몸체를 비활성화하여 더 이상 충돌하지 않도록 설정.
 

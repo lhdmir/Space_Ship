@@ -2,8 +2,8 @@ import Phaser from "phaser";
 // Background_Image 라는 이름으로 로드하기 위해서는 import해줘야함
 // import Background_Image from "../Asset/background/Space.png";
 
-// base 의 createBackground 함수 import
-import { createBackground } from "../base/base";
+// baseModule 의 createBackground 함수 import
+import { createBackground } from "../base/baseModule";
 
 // 타이틀 씬 클래스
 export default class TitleScene extends Phaser.Scene {
@@ -42,7 +42,7 @@ export default class TitleScene extends Phaser.Scene {
     // Title text: Space Ship 표시
     let titleText = this.add
       .text(400, 250, "Space Ship", {
-        fontFamily: "NeoDunggeunmo Code",
+        fontFamily: "NeoDunggeunmo",
         fontSize: "100px",
         color: "#fff",
       })
@@ -64,7 +64,7 @@ export default class TitleScene extends Phaser.Scene {
     // (400,400) 위치에 배치, setOrigin(0.5)로 중앙에 정렬
     let playButton = this.add
       .text(400, 450, "Start", {
-        fontFamily: "NeoDunggeunmo Code",
+        fontFamily: "NeoDunggeunmo",
         fontSize: "28px",
         color: "#fff",
       })

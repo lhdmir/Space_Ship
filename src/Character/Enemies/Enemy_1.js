@@ -1,12 +1,14 @@
 import Phaser from "phaser";
 
 import Enemy1_Bullet from "../../Effect/Enemy1_Bullet";
-import { spawnEnemy } from "../../base/base";
 
 export default class Enemy1 extends Phaser.Physics.Arcade.Sprite {
-  // 클래스 변수, 모든 인스턴스가 해당 변수를 공유할 수 있다
-  // static ENEMY_SPEED = 30;
-  static ENEMY_SPEED = 1;
+  // 클래스 변수(프로퍼티), 모든 인스턴스가 해당 변수를 공유할 수 있다
+  static ENEMY_SPEED = 100;
+  static ENEMY_MOVE_DISTANCE = 1;
+  static ENEMY_MAX_HP = 100;
+  static ENEMY_ATTACK_POWER = 10;
+  static ENEMY_ATTACK_SPEED = 1000;
 
   constructor(scene, x, y) {
     super(scene, x, -50, "Enemies");
@@ -14,29 +16,28 @@ export default class Enemy1 extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
-    // 인스턴스 변수, 각 인스턴스 별로 관리함
-    this.ENEMY_HP = 100;
-    this.attackPower = 10;
+    // 인스턴스 변수(프로퍼티), 각 인스턴스 별로 관리함
+    this.currentHp = Enemy1.ENEMY_MAX_HP;
+    this.attackPower = Enemy1.ENEMY_ATTACK_POWER;
+
+    // 이동가능 플래그
     this.isMoveable = false;
 
     this.setScale(3);
     this.setAlpha(1);
-    // this.setCollideWorldBounds(true);
 
     // 물리 충돌 사이즈 조정
     this.setSize(this.width * 0.65, this.height * 0.45, true);
 
     this.createEnemy1Animations();
 
-    spawnEnemy(scene, this, x, y);
+    scene.spawnEnemy(this, x, y);
 
     this.play("Move");
 
     // 0.1초에 한번씩 움직이는 이벤트 추가
-    // 0.1초에 1씩 이동
     this.moveEvent = scene.time.addEvent({
-      // delay: 1500,
-      delay: 100,
+      delay: Enemy1.ENEMY_SPEED,
       callback: () => {
         this.move();
       },
@@ -45,7 +46,7 @@ export default class Enemy1 extends Phaser.Physics.Arcade.Sprite {
 
     // 1초에 한번씩 공격하는 이벤트 추가
     this.shootEvent = scene.time.addEvent({
-      delay: 1000,
+      delay: Enemy1.ENEMY_ATTACK_SPEED,
       callback: () => {
         this.shotBullet(this.attackPower);
       },
@@ -81,21 +82,7 @@ export default class Enemy1 extends Phaser.Physics.Arcade.Sprite {
 
   move() {
     if (this.isMoveable) {
-      // // 플레이어와 적의 좌표차이
-      // let x = this.scene.player.x - this.x;
-
-      // // player와 x 좌표가 30이상 차이나지 않는다면
-      // // x좌표는 고정하고 y좌표만 이동
-      // if (Math.abs(x) < 30) {
-      //   this.y += 30;
-      // } else if (x < 0) {
-      //   this.x -= Enemy1.ENEMY_SPEED;
-      //   this.y += 30;
-      // } else if (x > 0) {
-      //   this.x += Enemy1.ENEMY_SPEED;
-      //   this.y += 30;
-      // }
-      this.y += Enemy1.ENEMY_SPEED;
+      this.y += Enemy1.ENEMY_MOVE_DISTANCE;
     }
   }
 
@@ -107,11 +94,10 @@ export default class Enemy1 extends Phaser.Physics.Arcade.Sprite {
   }
 
   hit(damage, scene) {
-    this.ENEMY_HP -= damage;
-    // console.log(this.ENEMY_HP);
+    this.currentHp -= damage;
 
     // Death
-    if (this.ENEMY_HP <= 0) {
+    if (this.currentHp <= 0) {
       this.death();
       // hit() 으로 인한 사망이면
       // 플레이어의 콤보와 스코어를 증가
