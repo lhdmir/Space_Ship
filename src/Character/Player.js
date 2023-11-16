@@ -24,6 +24,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
   ) {
     super(scene, 400, 600, "Player");
 
+    this.scene = scene;
+
     // 플레이어 체력
     this.currentHp = currentHp;
 
@@ -147,7 +149,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
-  hit(damage, scene) {
+  hit(damage) {
     this.currentHp -= damage;
     this.comboCount = 0;
     this.attackPower = 10;
@@ -176,8 +178,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
           this.setActive(false);
           this.setAlpha(0);
           setTimeout(() => {
-            scene.game.registry.set("score", scene.score);
-            scene.scene.start("gameOverScene");
+            this.scene.game.registry.set("score", this.scene.score);
+            this.scene.scene.start("gameOverScene");
           }, 1000);
         },
         this

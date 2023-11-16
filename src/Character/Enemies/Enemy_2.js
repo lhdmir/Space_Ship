@@ -1,12 +1,10 @@
 import Phaser from "phaser";
 
-import { spawnEnemy } from "../../base/base";
-
 export default class Enemy2 extends Phaser.Physics.Arcade.Sprite {
   // 클래스 변수(프로퍼티), 모든 인스턴스가 해당 변수를 공유할 수 있다
-  static ENEMY_SPEED = 100;
-  static ENEMY_MOVE_DISTANCE = 1;
-  static ENEMY_MAX_HP = 100;
+  static ENEMY_MOVE_DELAY = 3000;
+  static ENEMY_MOVE_DISTANCE = 30;
+  static ENEMY_MAX_HP = 50;
   static ENEMY_ATTACK_POWER = 10;
   static ENEMY_ATTACK_SPEED = 1000;
 
@@ -15,6 +13,8 @@ export default class Enemy2 extends Phaser.Physics.Arcade.Sprite {
 
     scene.add.existing(this);
     scene.physics.add.existing(this);
+
+    this.scene = scene;
 
     // 인스턴스 변수(프로퍼티), 각 인스턴스 별로 관리함
     this.currentHp = Enemy2.ENEMY_MAX_HP;
@@ -26,45 +26,51 @@ export default class Enemy2 extends Phaser.Physics.Arcade.Sprite {
     this.setScale(3);
     this.setAlpha(1);
 
-    // 물리 충돌 사이즈 조정
-    this.setSize(this.width * 0.65, this.height * 0.45, true);
-
-    this.createEnemy1Animations();
-
-    spawnEnemy(scene, this, x, y);
-
+    this.createEnemy2Animations();
     this.play("Move");
 
-    // 0.1초에 한번씩 움직이는 이벤트 추가
+    // 물리 충돌 사이즈 조정
+    this.setSize(this.width * 0.5, this.height * 0.45, true);
+
+    scene.spawnEnemy(this, x, y);
+
+    // 움직이는 이벤트 추가
     this.moveEvent = scene.time.addEvent({
-      delay: Enemy2.ENEMY_SPEED,
+      delay: Enemy2.ENEMY_MOVE_DELAY,
       callback: () => {
         this.move();
       },
       loop: true,
     });
-
-    // 1초에 한번씩 공격하는 이벤트 추가
-    this.shootEvent = scene.time.addEvent({
-      delay: Enemy2.ENEMY_ATTACK_SPEED,
-      callback: () => {
-        this.shotBullet(this.attackPower);
-      },
-      loop: true,
-    });
   }
 
-  createEnemy1Animations() {
+  createEnemy2Animations() {
     this.anims.create({
-      key: "Idle",
-      frames: this.anims.generateFrameNumbers("Enemies", { start: 0, end: 0 }),
+      key: "Move",
+      frames: this.anims.generateFrameNumbers("Enemies", {
+        start: 12,
+        end: 15,
+      }),
       frameRate: 10,
       repeat: -1,
     });
 
     this.anims.create({
-      key: "Move",
-      frames: this.anims.generateFrameNumbers("Enemies", { start: 0, end: 3 }),
+      key: "Right",
+      frames: this.anims.generateFrameNumbers("Enemies", {
+        start: 21,
+        end: 23,
+      }),
+      frameRate: 10,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "Left",
+      frames: this.anims.generateFrameNumbers("Enemies", {
+        start: 18,
+        end: 20,
+      }),
       frameRate: 10,
       repeat: -1,
     });
@@ -82,21 +88,39 @@ export default class Enemy2 extends Phaser.Physics.Arcade.Sprite {
 
   move() {
     if (this.isMoveable) {
-      // // 플레이어와 적의 좌표차이
-      // let x = this.scene.player.x - this.x;
+      let x = this.scene.player.x - this.x;
 
-      // // player와 x 좌표가 30이상 차이나지 않는다면
-      // // x좌표는 고정하고 y좌표만 이동
-      // if (Math.abs(x) < 30) {
-      //   this.y += 30;
-      // } else if (x < 0) {
-      //   this.x -= Enemy2.ENEMY_SPEED;
-      //   this.y += 30;
-      // } else if (x > 0) {
-      //   this.x += Enemy2.ENEMY_SPEED;
-      //   this.y += 30;
-      // }
-      this.y += Enemy2.ENEMY_MOVE_DISTANCE;
+      let xTarget = this.x; // xDistance를 현재 x 좌표로 초기화
+      // yDistance를 현재 y 좌표에 적대적 이동 거리를 더해 초기화
+      let yTarget = this.y + Enemy2.ENEMY_MOVE_DISTANCE;
+
+      let xDistance = Math.floor(Math.random() * (40 - 20) + 20);
+
+      // player와 x 좌표가 30이상 차이나면 x 좌표를 조정
+      if (Math.abs(x) >= 30) {
+        if (x < 0) {
+          xTarget -= xDistance;
+          this.play("Right");
+        } else {
+          xTarget += xDistance;
+          this.play("Left");
+        }
+      }
+      // 이후에 xDistance와 yDistance를 사용하여 객체 위치 업데이트
+
+      this.scene.tweens.add({
+        targets: this,
+        x: xTarget,
+        y: yTarget,
+        ease: "Power1",
+        duration: 2000,
+        repeat: 0,
+        yoyo: false,
+        removeOnComplete: true,
+        onComplete: () => {
+          this.play("Move");
+        },
+      });
     }
   }
 
@@ -107,7 +131,7 @@ export default class Enemy2 extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
-  hit(damage, scene) {
+  hit(damage) {
     this.currentHp -= damage;
 
     // Death
@@ -115,9 +139,9 @@ export default class Enemy2 extends Phaser.Physics.Arcade.Sprite {
       this.death();
       // hit() 으로 인한 사망이면
       // 플레이어의 콤보와 스코어를 증가
-      scene.player.comboCount += 1;
-      scene.score += 10;
-      scene.scoreText.setText("Score: " + scene.score);
+      this.scene.player.comboCount += 1;
+      this.scene.score += 10;
+      this.scene.scoreText.setText("Score: " + this.scene.score);
     }
   }
 
@@ -126,9 +150,9 @@ export default class Enemy2 extends Phaser.Physics.Arcade.Sprite {
     if (this.moveEvent) {
       this.moveEvent.remove();
     }
-    if (this.shootEvent) {
-      this.shootEvent.remove();
-    }
+
+    // 현재 객체에 연결된 모든 tweens를 취소하고 제거
+    this.scene.tweens.killTweensOf(this);
 
     this.body.enable = false; // 물리적 몸체를 비활성화하여 더 이상 충돌하지 않도록 설정.
 
@@ -136,7 +160,9 @@ export default class Enemy2 extends Phaser.Physics.Arcade.Sprite {
     this.play("Explosion").on(
       "animationcomplete",
       () => {
-        this.destroy();
+        if (this.active) {
+          this.destroy();
+        }
       },
       this
     ); // 'this'는 콜백 내에서 Enemy2 인스턴스를 참조하기 위해 전달된다.

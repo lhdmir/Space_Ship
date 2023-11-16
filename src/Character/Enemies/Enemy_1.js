@@ -5,8 +5,8 @@ import Enemy1_Bullet from "../../Effect/Enemy1_Bullet";
 export default class Enemy1 extends Phaser.Physics.Arcade.Sprite {
   // 클래스 변수(프로퍼티), 모든 인스턴스가 해당 변수를 공유할 수 있다
   static ENEMY_SPEED = 100;
-  static ENEMY_MOVE_DISTANCE = 1;
-  static ENEMY_MAX_HP = 100;
+  static ENEMY_MOVE_DISTANCE = 2;
+  static ENEMY_MAX_HP = 50;
   static ENEMY_ATTACK_POWER = 10;
   static ENEMY_ATTACK_SPEED = 1000;
 
@@ -15,6 +15,8 @@ export default class Enemy1 extends Phaser.Physics.Arcade.Sprite {
 
     scene.add.existing(this);
     scene.physics.add.existing(this);
+
+    this.scene = scene;
 
     // 인스턴스 변수(프로퍼티), 각 인스턴스 별로 관리함
     this.currentHp = Enemy1.ENEMY_MAX_HP;
@@ -26,14 +28,13 @@ export default class Enemy1 extends Phaser.Physics.Arcade.Sprite {
     this.setScale(3);
     this.setAlpha(1);
 
+    this.createEnemy1Animations();
+    this.play("Move");
+
     // 물리 충돌 사이즈 조정
     this.setSize(this.width * 0.65, this.height * 0.45, true);
 
-    this.createEnemy1Animations();
-
     scene.spawnEnemy(this, x, y);
-
-    this.play("Move");
 
     // 0.1초에 한번씩 움직이는 이벤트 추가
     this.moveEvent = scene.time.addEvent({
@@ -101,9 +102,9 @@ export default class Enemy1 extends Phaser.Physics.Arcade.Sprite {
       this.death();
       // hit() 으로 인한 사망이면
       // 플레이어의 콤보와 스코어를 증가
-      scene.player.comboCount += 1;
-      scene.score += 10;
-      scene.scoreText.setText("Score: " + scene.score);
+      this.scene.player.comboCount += 1;
+      this.scene.score += 10;
+      this.scene.scoreText.setText("Score: " + this.scene.score);
     }
   }
 

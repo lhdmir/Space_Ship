@@ -26,7 +26,7 @@ export default class BaseStage extends Phaser.Scene {
   }
 
   create() {
-    // this.physics.world.createDebugGraphic();
+    this.physics.world.createDebugGraphic();
 
     // background 생성
     createBackground(this);
@@ -149,12 +149,13 @@ export default class BaseStage extends Phaser.Scene {
   createEnemyGroup() {
     // Enemy Bullets 그룸 생성
     this.enemy_bullet = this.physics.add.group({
-      classType: Enemy1_Bullet,
       runChildUpdate: true,
     });
 
     // Enemy 그룹 생성
-    this.enemies = this.physics.add.group();
+    this.enemies = this.physics.add.group({
+      runChildUpdate: true,
+    });
   }
 
   spawnEnemy(enemy, x, y) {
@@ -202,7 +203,7 @@ export default class BaseStage extends Phaser.Scene {
       this.enemies,
       (bullet, enemy) => {
         bullet.destroy(); // 총알 제거
-        enemy.hit(bullet.damage, this); // 적에게 피해를 줌 (예: 10의 피해)
+        enemy.hit(bullet.damage); // 적에게 피해를 줌 (예: 10의 피해)
         this.hitBlink(enemy); //피격 이펙트
       }
     );
@@ -214,7 +215,7 @@ export default class BaseStage extends Phaser.Scene {
       this.playerGroup,
       (bullet, player) => {
         bullet.destroy(); // 총알 제거
-        player.hit(bullet.damage, this); // 플레이어 10 피해
+        player.hit(bullet.damage); // 플레이어 10 피해
         this.hitBlink(player); //피격 이펙트
       }
     );
