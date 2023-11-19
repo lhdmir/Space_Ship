@@ -154,6 +154,11 @@ export default class BaseStage extends Phaser.Scene {
     this.enemies = this.physics.add.group({
       runChildUpdate: true,
     });
+
+    // rush Enemy Group
+    this.rushEnemies = this.physics.add.group({
+      runChildUpdate: true,
+    });
   }
 
   spawnEnemy(enemy, x, y) {
@@ -201,7 +206,7 @@ export default class BaseStage extends Phaser.Scene {
       this.enemies,
       (bullet, enemy) => {
         bullet.destroy(); // 총알 제거
-        enemy.hit(bullet.damage); // 적에게 피해를 줌 (예: 10의 피해)
+        enemy.hit(bullet.damage); // 적에게 피해를 줌
         this.hitBlink(enemy); //피격 이펙트
       }
     );
@@ -213,8 +218,8 @@ export default class BaseStage extends Phaser.Scene {
       this.playerGroup,
       (bullet, player) => {
         bullet.destroy(); // 총알 제거
-        player.hit(bullet.damage); // 플레이어 10 피해
-        this.hitBlink(player); //피격 이펙트
+        player.hit(bullet.damage);
+        this.hitBlink(player);
       }
     );
 
@@ -238,6 +243,19 @@ export default class BaseStage extends Phaser.Scene {
         else if (eBullet.damage > pBullet.damage) {
           eBullet.damage -= pBullet.damage;
           pBullet.destroy();
+        }
+      }
+    );
+
+    // rush Enemy 와 충돌시 이벤트
+    this.physics.add.overlap(
+      this.rushEnemies,
+      this.playerGroup,
+      (enemy, player) => {
+        if (enemy.isAttacking) {
+          enemy.death(); // enemy 사망
+          player.hit(enemy.attackPower);
+          this.hitBlink(player);
         }
       }
     );
