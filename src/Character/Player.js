@@ -44,8 +44,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     //scene.add.existing 함수는 해당 scene에 오브젝트를 추가하는 함수.
     //scene.physics.add.existing 함수는 해당 scene에 추가한 오브젝트를
     //물리 엔진에 적용시키는 함수.
-    scene.add.existing(this);
-    scene.physics.add.existing(this);
+    this.scene.add.existing(this);
+    this.scene.physics.add.existing(this);
 
     // 사이즈 설정
     this.setScale(3);
@@ -60,10 +60,14 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     // 공격 이벤트
     // 300ms 한번씩 shotBullet()을 호출하는 이벤트를 추가
-    this.shootEvent = scene.time.addEvent({
+    this.startShootEvent();
+  }
+
+  startShootEvent() {
+    this.shootEvent = this.scene.time.addEvent({
       delay: Player.PLAYER_ATTACK_SPEED,
       callback: () => {
-        this.shotBullet(this.attackPower);
+        this.shootBullet(this.attackPower);
       },
       loop: true,
     });
@@ -139,7 +143,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     this.healthBar.positionUpdate(this);
   }
 
-  shotBullet(damage) {
+  shootBullet(damage) {
     // 스폰이 완료되면 Bullet 생성
     if (this.isMoveable) {
       // bullet 인스턴스 생성

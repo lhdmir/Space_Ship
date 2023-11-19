@@ -11,8 +11,8 @@ export default class Enemy2_Bullet1 extends Phaser.Physics.Arcade.Sprite {
     this.scene = scene;
 
     // 현재 씬에 총알 추가
-    scene.add.existing(this);
-    scene.physics.world.enableBody(this);
+    this.scene.add.existing(this);
+    this.scene.physics.world.enableBody(this);
 
     // Bullet 애니메이션 생성
     this.createEnemy2_BulletAnimation1();
@@ -40,7 +40,7 @@ export default class Enemy2_Bullet1 extends Phaser.Physics.Arcade.Sprite {
     }, splitTimeLimit);
 
     // Enemy 그룹에 오브젝트 추가
-    scene.enemy_bullet.add(this);
+    this.scene.enemy_bullet.add(this);
   }
 
   update() {

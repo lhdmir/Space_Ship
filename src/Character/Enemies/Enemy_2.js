@@ -12,10 +12,10 @@ export default class Enemy2 extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
     super(scene, x, -50, "Enemies");
 
-    scene.add.existing(this);
-    scene.physics.add.existing(this);
-
     this.scene = scene;
+
+    this.scene.add.existing(this);
+    this.scene.physics.add.existing(this);
 
     // 인스턴스 변수(프로퍼티), 각 인스턴스 별로 관리함
     this.currentHp = Enemy2.ENEMY_MAX_HP;
@@ -27,16 +27,20 @@ export default class Enemy2 extends Phaser.Physics.Arcade.Sprite {
     this.setScale(3);
     this.setAlpha(1);
 
-    this.createEnemy2Animations();
-    this.play("Move");
-
     // 물리 충돌 사이즈 조정
     this.setSize(this.width * 0.5, this.height * 0.45, true);
 
     this.scene.spawnEnemy(this, x, y);
 
+    this.createEnemy2Animations();
+    this.play("Move");
+
     // 움직이는 이벤트 추가
-    this.moveEvent = scene.time.addEvent({
+    this.startMoveEvent();
+  }
+
+  startMoveEvent() {
+    this.moveEvent = this.scene.time.addEvent({
       delay: Enemy2.ENEMY_MOVE_DELAY,
       callback: () => {
         this.move();
@@ -120,13 +124,13 @@ export default class Enemy2 extends Phaser.Physics.Arcade.Sprite {
         removeOnComplete: true,
         onComplete: () => {
           this.play("Move");
-          this.shotBullet(this.attackPower);
+          this.shootBullet(this.attackPower);
         },
       });
     }
   }
 
-  shotBullet(damage) {
+  shootBullet(damage) {
     if (this.isMoveable) {
       let bullet = new Enemy2_Bullet1(this.scene, this, damage);
       bullet.body.velocity.y = +200;

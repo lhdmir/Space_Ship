@@ -11,12 +11,13 @@ export default class Enemy1 extends Phaser.Physics.Arcade.Sprite {
   static ENEMY_ATTACK_SPEED = 1000;
 
   constructor(scene, x, y) {
+    // base 통합//
     super(scene, x, -50, "Enemies");
 
-    scene.add.existing(this);
-    scene.physics.add.existing(this);
-
     this.scene = scene;
+
+    this.scene.add.existing(this);
+    this.scene.physics.add.existing(this);
 
     // 인스턴스 변수(프로퍼티), 각 인스턴스 별로 관리함
     this.currentHp = Enemy1.ENEMY_MAX_HP;
@@ -28,41 +29,43 @@ export default class Enemy1 extends Phaser.Physics.Arcade.Sprite {
     this.setScale(3);
     this.setAlpha(1);
 
-    this.createEnemy1Animations();
-    this.play("Move");
-
     // 물리 충돌 사이즈 조정
     this.setSize(this.width * 0.65, this.height * 0.45, true);
 
     this.scene.spawnEnemy(this, x, y);
 
+    // base 통합//
+    this.createEnemy1Animations();
+    this.play("Move");
+
     // 0.1초에 한번씩 움직이는 이벤트 추가
-    this.moveEvent = scene.time.addEvent({
+    this.startMoveEvent();
+
+    // 1초에 한번씩 공격하는 이벤트 추가
+    this.startShootEvent();
+  }
+
+  startShootEvent() {
+    this.shootEvent = this.scene.time.addEvent({
+      delay: Enemy1.ENEMY_ATTACK_SPEED,
+      callback: () => {
+        this.shootBullet(this.attackPower);
+      },
+      loop: true,
+    });
+  }
+
+  startMoveEvent() {
+    this.moveEvent = this.scene.time.addEvent({
       delay: Enemy1.ENEMY_SPEED,
       callback: () => {
         this.move();
       },
       loop: true,
     });
-
-    // 1초에 한번씩 공격하는 이벤트 추가
-    this.shootEvent = scene.time.addEvent({
-      delay: Enemy1.ENEMY_ATTACK_SPEED,
-      callback: () => {
-        this.shotBullet(this.attackPower);
-      },
-      loop: true,
-    });
   }
 
   createEnemy1Animations() {
-    this.anims.create({
-      key: "Idle",
-      frames: this.anims.generateFrameNumbers("Enemies", { start: 0, end: 0 }),
-      frameRate: 10,
-      repeat: -1,
-    });
-
     this.anims.create({
       key: "Move",
       frames: this.anims.generateFrameNumbers("Enemies", { start: 0, end: 3 }),
@@ -87,7 +90,7 @@ export default class Enemy1 extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
-  shotBullet(damage) {
+  shootBullet(damage) {
     if (this.isMoveable) {
       let bullet = new Enemy1_Bullet(this.scene, this, damage);
       bullet.body.velocity.y = +300;
