@@ -6,30 +6,37 @@ import { Direction } from "../base/baseModule";
 // Bullet 클래스 import
 import Player_Bullet from "../Effect/Player_Bullet";
 
+// HealthBar 클래스 import
 import HealthBar from "../UI/HealthBar";
 
 // 플레이어 클래스 생성
 export default class Player extends Phaser.Physics.Arcade.Sprite {
-  // 플레이어의 속도 설정
-  static PLAYER_SPEED = 4;
-  static PLAYER_MAX_HP = 100;
-  static PLAYER_ATTACK_POWER = 10;
-  static PLAYER_ATTACK_SPEED = 300;
+  // 최대 체력
+  static MAX_HP = 100;
+  // 공격력
+  static ATTACK_POWER = 10;
+  // 이동속도
+  static SPEED = 4;
+  // 공격속도
+  static ATTACK_SPEED = 300;
 
+  // 생성할때 scene정보, 현재체력, 공격력, 콤보카운트를 입력받음
+  // 없으면 최대체력과 기본 공격력으로 설정
   constructor(
     scene,
-    currentHp = Player.PLAYER_MAX_HP,
-    attackPower = Player.PLAYER_ATTACK_POWER,
+    currentHp = Player.MAX_HP,
+    attackPower = Player.ATTACK_POWER,
     comboCount = 0
   ) {
-    super(scene, 400, 600, "Player");
+    super(scene, 400, 600);
 
+    // 입력받은 씬 정보 저장
     this.scene = scene;
 
     // 플레이어 체력
     this.currentHp = currentHp;
 
-    // HP Bar
+    // HP Bar 생성
     this.healthBar = new HealthBar(scene, this);
 
     // 플레이어 공격력
@@ -41,10 +48,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     // 이동 가능한지 체크하는 플래그 추가
     this.isMoveable = false;
 
-    //scene.add.existing 함수는 해당 scene에 오브젝트를 추가하는 함수.
-    //scene.physics.add.existing 함수는 해당 scene에 추가한 오브젝트를
-    //물리 엔진에 적용시키는 함수.
+    // 해당 scene에 오브젝트를 추가하는 함수.
     this.scene.add.existing(this);
+    // 해당 scene에 추가한 오브젝트를 물리 엔진에 적용시키는 함수.
     this.scene.physics.add.existing(this);
 
     // 사이즈 설정
@@ -61,16 +67,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     // 공격 이벤트
     // 300ms 한번씩 shotBullet()을 호출하는 이벤트를 추가
     this.startShootEvent();
-  }
 
-  startShootEvent() {
-    this.shootEvent = this.scene.time.addEvent({
-      delay: Player.PLAYER_ATTACK_SPEED,
-      callback: () => {
-        this.shootBullet(this.attackPower);
-      },
-      loop: true,
-    });
+    this.createComboCountUpEventListener();
   }
 
   createPlayerAnimations() {
@@ -119,28 +117,26 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     });
   }
 
-  move(direction) {
-    // direction을 매개변수로 받음
-    // 매개변수의 값에따라 player의 좌표를 player_speed 만큼 변경
+  createComboCountUpEventListener() {
+    this.comboCountUpEvent = new Phaser.Events.EventEmitter();
+    this.comboCountUpEvent.on("ComboCountUp", () => {
+      this.comboCount += 1;
 
-    switch (direction) {
-      case Direction.Up:
-        this.y -= Player.PLAYER_SPEED;
-        break;
+      if (this.comboCount == 3 && this.attackPower != 50) {
+        this.comboCount = 0;
+        this.attackPower += 10;
+      }
+    });
+  }
 
-      case Direction.Down:
-        this.y += Player.PLAYER_SPEED;
-        break;
-
-      case Direction.Left:
-        this.x -= Player.PLAYER_SPEED;
-        break;
-
-      case Direction.Right:
-        this.x += Player.PLAYER_SPEED;
-        break;
-    }
-    this.healthBar.positionUpdate(this);
+  startShootEvent() {
+    this.shootEvent = this.scene.time.addEvent({
+      delay: Player.ATTACK_SPEED,
+      callback: () => {
+        this.shootBullet(this.attackPower);
+      },
+      loop: true,
+    });
   }
 
   shootBullet(damage) {
@@ -153,10 +149,37 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
+  move(direction) {
+    // direction을 매개변수로 받음
+    // 매개변수의 값에따라 player의 좌표를 player_speed 만큼 변경
+
+    switch (direction) {
+      case Direction.Up:
+        this.y -= Player.SPEED;
+        break;
+
+      case Direction.Down:
+        this.y += Player.SPEED;
+        break;
+
+      case Direction.Left:
+        this.x -= Player.SPEED;
+        break;
+
+      case Direction.Right:
+        this.x += Player.SPEED;
+        break;
+    }
+    // 이동이 끝나면 healthBar의 위치를 update
+    this.healthBar.positionUpdate(this);
+  }
+
   hit(damage) {
+    // 현재 체력을 damage 만큼 감소
     this.currentHp -= damage;
+    // 콤보와 공격력 초기화
     this.comboCount = 0;
-    this.attackPower = 10;
+    this.attackPower = Player.ATTACK_POWER;
 
     //healthBar draw
     this.healthBar.decrease(damage);
@@ -187,14 +210,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
           }, 1000);
         },
         this
-      ); // 'this'는 콜백 내에서 Enemy1 인스턴스를 참조하기 위해 전달된다.
-    }
-  }
-
-  update() {
-    if (this.comboCount == 3 && this.attackPower != 50) {
-      this.comboCount = 0;
-      this.attackPower += 10;
+      ); // 'this'는 콜백 내에서 Player인스턴스를 참조하기 위해 전달된다.
+      // 즉, 콜백 내부의 this에는 this(player의 인스턴스)가 전달된다.
     }
   }
 }

@@ -2,10 +2,15 @@ import Phaser from "phaser";
 
 export default class Enemy2_Bullet2 extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, firstBullet, direction, damage) {
+    // 총알의 x좌표를 firstBullet의 x좌표로 설정
     const x = firstBullet.x;
+    // 총알의 y좌표를 firstBullet의 y좌표로 설정
     const y = firstBullet.y;
-    super(scene, x, y, "Enemies");
 
+    // 좌표를 토대로 생성
+    super(scene, x, y);
+
+    // 생성할 때 받은 scene의 정보 저장
     this.scene = scene;
 
     // 현재 씬에 총알 추가
@@ -19,14 +24,9 @@ export default class Enemy2_Bullet2 extends Phaser.Physics.Arcade.Sprite {
     this.damage = damage;
     this.play("Enemy2_Bullet2");
     this.setScale(3);
-    this.setActive(true);
-    this.setVisible(true);
 
-    if (direction == 1) {
-      this.scaleX = 1;
-    } else if (direction == -1) {
-      this.scaleX = -1;
-    }
+    // 총알 방향 설정
+    this.scaleX = direction;
 
     // 물리 충돌 사이즈 조정
     this.setSize(this.width * 0.2, this.height * 0.2, true);

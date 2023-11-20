@@ -1,38 +1,47 @@
-import Phaser from "phaser";
+import baseEnemy from "../baseEnemy";
 
-export default class Enemy3 extends Phaser.Physics.Arcade.Sprite {
-  static ENEMY_MAX_HP = 40;
-  static ENEMY_ATTACK_POWER = 40;
+export default class Enemy3 extends baseEnemy {
+  // 클래스 변수(프로퍼티), 모든 인스턴스가 해당 변수를 공유할 수 있다
+
+  // 최대 체력
+  static MAX_HP = 40;
+  // 공격력
+  static ATTACK_POWER = 40;
+  // 이동속도
+  static SPEED = 300;
 
   constructor(scene, x, y) {
-    super(scene, x, -50, "Enemies");
+    // 부모 클래스의 constructor 호출
+    super(scene, x, y);
 
-    this.scene = scene;
-
-    this.scene.add.existing(this);
-    this.scene.physics.add.existing(this);
-
-    this.currentHp = Enemy3.ENEMY_MAX_HP;
-    this.attackPower = Enemy3.ENEMY_ATTACK_POWER;
-
-    this.isMoveable = false;
-    this.isAttacking = false;
-
-    this.setScale(3);
-    this.setAlpha(1);
-
+    // 물리 충돌 사이즈 조정
     this.setSize(this.width * 0.5, this.height * 0.45, true);
 
-    this.scene.spawnEnemy(this, x, y);
+    // HP와 공격력 설정
+    this.currentHp = Enemy3.MAX_HP;
+    this.attackPower = Enemy3.ATTACK_POWER;
 
+    // 공격 상태 플래그
+    this.isAttacking = false;
+
+    // 애니메이션 생성
     this.createEnemy3Animations();
+    // 처음 애니메이션 재생
     this.play("Move");
 
+    // 일반 개체와 다르기때문에 물리 이벤트를 위해서
+    // 다른 rushEnemies 그룹에도 추가
     this.scene.rushEnemies.add(this);
 
+    // AttackTimer 시작
+    this.startAttackTimer();
+  }
+
+  startAttackTimer() {
+    // 어택타이머 설정
     this.attackTimer = setTimeout(() => {
       this.isAttacking = true;
-      this.setVelocityY(300);
+      this.setVelocityY(Enemy3.SPEED);
       this.play("Attack");
     }, 5000);
   }
@@ -69,36 +78,14 @@ export default class Enemy3 extends Phaser.Physics.Arcade.Sprite {
     });
   }
 
-  hit(damage) {
-    this.currentHp -= damage;
-
-    // Death
-    if (this.currentHp <= 0) {
-      this.death();
-      // hit() 으로 인한 사망이면
-      // 플레이어의 콤보와 스코어를 증가
-      // ScoreUp() 이라는 함수로 재정의 해서 분리
-      this.scene.player.comboCount += 1;
-      this.scene.score += 10;
-      this.scene.scoreText.setText("Score: " + this.scene.score);
-    }
-  }
-
   death() {
+    // 삭제되기전에 타이머가 있다면 타이머를 삭제
     if (this.attackTimer) {
       clearTimeout(this.attackTimer);
     }
+    // 공격상태를 false로 전환
     this.isAttacking = false;
 
-    this.body.enable = false; // 물리적 몸체를 비활성화하여 더 이상 충돌하지 않도록 설정.
-
-    // 애니메이션을 재생하고, 애니메이션이 완료되면 'animationcomplete' 이벤트가 발생.
-    this.play("Explosion").on(
-      "animationcomplete",
-      () => {
-        this.destroy();
-      },
-      this
-    ); // 'this'는 콜백 내에서 Enemy1 인스턴스를 참조하기 위해 전달된다.
+    super.death();
   }
 }

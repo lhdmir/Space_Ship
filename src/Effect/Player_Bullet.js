@@ -2,13 +2,20 @@ import Phaser from "phaser";
 
 export default class Player_Bullet extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, player, damage) {
+    // 총알의 x좌표를 player의 x좌표로 설정
     const x = player.x;
+    // 총알의 y좌표를 player의 y - 40좌표로 설정
     const y = player.y - 40;
-    super(scene, x, y, "Bullets");
+
+    // 좌표를 토대로 생성
+    super(scene, x, y);
+
+    // 생성할 때 받은 scene의 정보 저장
+    this.scene = scene;
 
     // 현재 씬에 총알 추가
-    scene.add.existing(this);
-    scene.physics.world.enableBody(this);
+    this.scene.add.existing(this);
+    this.scene.physics.world.enableBody(this);
 
     // Bullet 애니메이션 생성
     this.createPlayerBulletAnimation();
@@ -16,11 +23,9 @@ export default class Player_Bullet extends Phaser.Physics.Arcade.Sprite {
     // 총알 초기 설정
     this.initBullet(damage);
     this.setScale(3);
-    this.setActive(true);
-    this.setVisible(true);
 
     // Bullets 그룹에 오브젝트 추가
-    scene.player_bullet.add(this);
+    this.scene.player_bullet.add(this);
   }
 
   update() {
@@ -80,6 +85,7 @@ export default class Player_Bullet extends Phaser.Physics.Arcade.Sprite {
   }
 
   initBullet(damage) {
+    // damage에 따라서 총알 분류
     switch (damage) {
       case 10:
         this.damage = damage;

@@ -1,10 +1,10 @@
 import Phaser from "phaser";
 
 // base import
-import { createBackground } from "./baseModule";
+import { createBackground } from "../base/baseModule";
 
 // 방향정의 오브젝트 import
-import { Direction } from "./baseModule";
+import { Direction } from "../base/baseModule";
 
 // Player Class import
 import Player from "../Character/Player";
@@ -20,7 +20,6 @@ export default class BaseStage extends Phaser.Scene {
 
   preload() {
     this.loadAsset();
-    console.log("Complete Asset Load");
   }
 
   create() {
@@ -31,7 +30,6 @@ export default class BaseStage extends Phaser.Scene {
 
     // 키 할당
     this.assignKeys();
-    console.log("Complete Assign Keys");
 
     // 플레이어 생성
     this.createPlayer(
@@ -40,23 +38,21 @@ export default class BaseStage extends Phaser.Scene {
       this.playerData.attackPower,
       this.playerData.comboCount
     );
-    console.log("Complete Create Player");
 
     // 적 그룹 생성
     this.createEnemyGroup();
-    console.log("Complete Create Enemy Group");
 
     // 충돌 이벤트 생성
     this.collisionEvent();
-    console.log("Complete Create Collision Event");
 
     // dead zone 생성
     this.createDeadZone();
-    console.log("Complete Create Dead Zone");
 
     // Score UI 생성
     this.createScoreUI();
-    console.log("Complete Create Score UI");
+
+    // ScoreUp Event Listener 생성
+    this.createScoreUpEventListener();
   }
 
   update() {
@@ -124,6 +120,7 @@ export default class BaseStage extends Phaser.Scene {
 
     this.playerGroup.add(this.player);
 
+    // 플레이어가 화면 밖으로 못나가게 설정
     this.player.setCollideWorldBounds(true);
 
     // 플레이어 생성 후 Spawn 재생
@@ -158,41 +155,6 @@ export default class BaseStage extends Phaser.Scene {
     // rush Enemy Group
     this.rushEnemies = this.physics.add.group({
       runChildUpdate: true,
-    });
-  }
-
-  spawnEnemy(enemy, x, y) {
-    this.tweens.add({
-      targets: enemy,
-      x: x,
-      y: y,
-      ease: "Power1", // 움직임의 속도 곡선
-      duration: 2000, // 2000 밀리초 동안 진행
-      repeat: 0, // 반복 횟수 (0은 반복하지 않음)
-      yoyo: false, // 원래 위치로 돌아갈지 여부
-      onComplete: () => {
-        enemy.isMoveable = true;
-      },
-    });
-  }
-
-  createDeadZone() {
-    this.deadZone = this.add.zone(400, 700, 800, 10);
-    this.physics.world.enable(this.deadZone);
-
-    this.physics.add.overlap(this.deadZone, this.enemies, (deadZone, enemy) => {
-      enemy.death();
-      this.player.hit(enemy.attackPower);
-      this.hitBlink(this.player); //피격 이펙트
-    });
-  }
-
-  createScoreUI() {
-    // 인게임에서 사용하는 스코어 UI
-    this.scoreText = this.add.text(16, 650, "Score: " + this.score, {
-      fontFamily: "NeoDunggeunmo",
-      fontSize: "24px",
-      fill: "#fff",
     });
   }
 
@@ -261,6 +223,35 @@ export default class BaseStage extends Phaser.Scene {
     );
   }
 
+  createDeadZone() {
+    // x: 400, y: 700의 위치에 800*10 size의 deadzone을 생성
+    this.deadZone = this.add.zone(400, 700, 800, 10);
+    this.physics.world.enable(this.deadZone);
+
+    this.physics.add.overlap(this.deadZone, this.enemies, (deadZone, enemy) => {
+      enemy.death();
+      this.player.hit(enemy.attackPower);
+      this.hitBlink(this.player); //피격 이펙트
+    });
+  }
+
+  createScoreUI() {
+    // 인게임에서 사용하는 스코어 UI
+    this.scoreText = this.add.text(16, 650, "Score: " + this.score, {
+      fontFamily: "NeoDunggeunmo",
+      fontSize: "24px",
+      fill: "#fff",
+    });
+  }
+
+  createScoreUpEventListener() {
+    this.scoreUpEvent = new Phaser.Events.EventEmitter();
+    this.scoreUpEvent.on("ScoreUp", () => {
+      this.score += 10;
+      this.scoreText.setText("Score: " + this.score);
+    });
+  }
+
   hitBlink(sprite) {
     // hit 했을때 깜빡거리는 효과
     this.tweens.add({
@@ -274,21 +265,26 @@ export default class BaseStage extends Phaser.Scene {
   }
 
   clearStage(stage) {
-    // 플레이어 데이터 저장
+    // 플레이어 데이터 오브젝트 생성
     let playerData = {
       currentHp: this.player.currentHp,
       attackPower: this.player.attackPower,
       comboCount: this.player.comboCount,
     };
+    // 플레이어 데이터 저장
     this.game.registry.set("playerData", playerData);
 
+    // 스코어 저장
     this.game.registry.set("score", this.score);
 
+    // 이동 플레그 설정
     this.player.isMoveable = false;
 
     // 체력바 비활성화
     this.player.healthBar.setAlpha(0);
 
+    // 1초후 clear애니메이션 재생
+    // 애니메이션 재생이 끝나면 다음 스테이지 시작
     setTimeout(() => {
       this.player.play("Clear").on("animationcomplete", () => {
         this.player.setActive(false);
