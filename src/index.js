@@ -3,19 +3,21 @@ import TitleScene from "./Scene/titleScene.js";
 import Stage1 from "./Stage/stage1.js";
 import Stage2 from "./Stage/stage2.js";
 import Stage3 from "./Stage/stage3.js";
-
 import gameOverScene from "./Scene/gameOverScene.js";
 import gameClearScene from "./Scene/gameClearScene.js";
 
 // Webpack에서 이미지를 참조할 수 있게 import 해준다.
+// Background Image
 import Background_Image from "../Asset/background/Space.png";
+// Player Image
 import Player_Image from "../Asset/Player/Ship.png";
 import Bullet_Image from "../Asset/Player/Bullet.png";
+// Enemies Image
 import Enemies_Image from "../Asset/Enemy/Enemies.png";
 import Enemies_Explosion_Image from "../Asset/Enemy/Enemy_Explosion.png";
-import Boss_1_Image from "../Asset/Enemy/Boss_1.png";
-import Boss_2_Image from "../Asset/Enemy/Boss_2.png";
-import Boss_Explosions_Image from "../Asset/Enemy/Boss_Explosions.png";
+// Boss Image
+import Boss_Image from "../Asset/Enemy/Boss_2.png";
+import Boss_Explosion_Image from "../Asset/Enemy/Boss_Explosion.png";
 
 const config = {
   type: Phaser.AUTO, // WebGL if available, otherwise Canvas
