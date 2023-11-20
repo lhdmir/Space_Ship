@@ -1,6 +1,6 @@
-import baseEnemy from "../baseEnemy";
+import baseEnemy from "./baseEnemy";
 
-import Enemy4_Bullet from "../../Effect/Enemy4_Bullet";
+import Enemy4_Bullet from "../../Effect/Enemy/Enemy4_Bullet";
 
 export default class Enemy4 extends baseEnemy {
   // 클래스 변수(프로퍼티), 모든 인스턴스가 해당 변수를 공유할 수 있다
@@ -54,7 +54,7 @@ export default class Enemy4 extends baseEnemy {
       // 새로운 bullet 객체를 생성
       let bullet = new Enemy4_Bullet(this.scene, this, damage);
       // 이동속도 조정
-      bullet.body.velocity.y = +300;
+      bullet.body.velocity.y = +400;
     }
   }
 
@@ -62,7 +62,7 @@ export default class Enemy4 extends baseEnemy {
     // 1초후 이동 시작
     this.moveTimer = setTimeout(() => {
       this.move();
-    }, 1000);
+    }, 1500);
   }
 
   move() {

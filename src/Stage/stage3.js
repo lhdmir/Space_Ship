@@ -2,9 +2,9 @@
 import BaseStage from "./baseStage";
 
 // Enemy Class import
-import Enemy1 from "../Character/Enemies/Enemy_1";
-import Enemy2 from "../Character/Enemies/Enemy_2";
-import Enemy3 from "../Character/Enemies/Enemy_3";
+import Enemy1 from "../Character/Enemy/Enemy_1";
+import Enemy2 from "../Character/Enemy/Enemy_2";
+import Enemy3 from "../Character/Enemy/Enemy_3";
 
 export default class Stage3 extends BaseStage {
   constructor() {

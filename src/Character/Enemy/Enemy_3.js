@@ -1,4 +1,4 @@
-import baseEnemy from "../baseEnemy";
+import baseEnemy from "./baseEnemy";
 
 export default class Enemy3 extends baseEnemy {
   // 클래스 변수(프로퍼티), 모든 인스턴스가 해당 변수를 공유할 수 있다
@@ -8,7 +8,7 @@ export default class Enemy3 extends baseEnemy {
   // 공격력
   static ATTACK_POWER = 40;
   // 이동속도
-  static SPEED = 300;
+  static SPEED = 400;
 
   constructor(scene, x, y) {
     // 부모 클래스의 constructor 호출

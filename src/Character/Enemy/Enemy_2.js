@@ -1,6 +1,6 @@
-import baseEnemy from "../baseEnemy";
+import baseEnemy from "./baseEnemy";
 
-import Enemy2_Bullet1 from "../../Effect/Enemy2_Bullet1";
+import Enemy2_Bullet1 from "../../Effect/Enemy/Enemy2_Bullet1";
 
 export default class Enemy2 extends baseEnemy {
   // 클래스 변수(프로퍼티), 모든 인스턴스가 해당 변수를 공유할 수 있다
