@@ -8,9 +8,9 @@ export default class Enemy4 extends baseEnemy {
   // 공격력
   static ATTACK_POWER = 10;
   // 이동속도
-  static SPEED = 50;
+  static SPEED = 100;
   // 이동거리
-  static MOVE_DISTANCE = 100;
+  static MOVE_DISTANCE = 50;
 
   constructor(scene, x, y) {
     super(scene, x, y);
@@ -80,6 +80,12 @@ export default class Enemy4 extends baseEnemy {
     // 목적지 x좌표는 RIGHT
     // 아니면 목적지 x좌표는 LEFT
     let targetX = this.x >= HALF_WIDTH ? TARGET_X_RIGHT : TARGET_X_LEFT;
+    // 목적지에 맞는 애니메이션 재생
+    if (targetX == TARGET_X_RIGHT) {
+      this.play("Right");
+    } else if (targetX == TARGET_X_LEFT) {
+      this.play("Left");
+    }
     // 목적지 y 좌표를 현재 y좌표 + MOVE_DISTANCE 값만큼 설정
     let targetY = this.y + Enemy4.MOVE_DISTANCE;
 
