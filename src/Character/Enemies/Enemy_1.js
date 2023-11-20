@@ -30,7 +30,7 @@ export default class Enemy1 extends baseEnemy {
     this.play("Move");
 
     // 이동 타이머 추가
-    this.startMovTimer();
+    this.startMoveTimer();
 
     // 공격 이벤트 추가
     this.startShootEvent();
@@ -47,7 +47,7 @@ export default class Enemy1 extends baseEnemy {
     });
   }
 
-  startMovTimer() {
+  startMoveTimer() {
     // 1초후 이동 시작 타이머
     this.moveTimer = setTimeout(() => {
       this.setVelocityY(Enemy1.SPEED);

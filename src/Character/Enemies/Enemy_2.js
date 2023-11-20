@@ -92,41 +92,13 @@ export default class Enemy2 extends baseEnemy {
     // 이동 가능 상태일때 실행 가능
     if (this.isMoveable) {
       // 현재 오브젝트의 x좌표 와 플레이어의 x좌표의 차
-      let x = this.scene.player.x - this.x;
+      let { targetX, targetY } = this.calculateTargetPosition();
 
-      // 목표 좌표 설정
-      // xTarget를 현재 x 좌표로 초기화
-      let xTarget = this.x;
-      // yTarget를 현재 y 좌표에 적대적 이동 거리를 더해 초기화
-      let yTarget = this.y + Enemy2.MOVE_DISTANCE;
-
-      // x축으로 이동할 거리를 20~40 사이로 설정
-      let xDistance = Math.floor(Math.random() * (40 - 20) + 20);
-
-      // 좌상단(0,0)    우상단(800,0)
-      // 좌하단(0,750)  우하단(800,750)
-
-      // player와 x 좌표가 30이상 차이나면 x 좌표를 조정
-      if (Math.abs(x) >= 30) {
-        // 플레이어를 마주보는 것이 기준일때
-        // x가 0보다 작다는것은 현재 위치보다 플레이어가 오른쪽에 있다는것.
-        // 고로 x축 이동 거리를 -조정
-        if (x < 0) {
-          xTarget -= xDistance;
-          this.play("Right");
-        }
-        // 반대도 마찬가지
-        else {
-          xTarget += xDistance;
-          this.play("Left");
-        }
-      }
-
-      // 이후에 xTarget와 yTarget를 사용하여 객체 위치 업데이트
+      // 이후에 targetX와 targetY를 사용하여 객체 위치 업데이트
       this.scene.tweens.add({
         targets: this,
-        x: xTarget,
-        y: yTarget,
+        x: targetX,
+        y: targetY,
         ease: "Power1",
         duration: 2000,
         repeat: 0,
@@ -140,6 +112,39 @@ export default class Enemy2 extends baseEnemy {
         },
       });
     }
+  }
+
+  calculateTargetPosition() {
+    let deltaX = this.scene.player.x - this.x;
+
+    // 목표 좌표 설정
+    // xTarget를 현재 x 좌표로 초기화
+    let targetX = this.x;
+    // yTarget를 현재 y 좌표에 적대적 이동 거리를 더해 초기화
+    let targetY = this.y + Enemy2.MOVE_DISTANCE;
+
+    // x축으로 이동할 거리를 20~40 사이로 설정
+    let distanceX = Math.floor(Math.random() * (40 - 20) + 20);
+
+    // 좌상단(0,0)    우상단(800,0)
+    // 좌하단(0,750)  우하단(800,750)
+    // player와 x 좌표가 30이상 차이나면 x 좌표를 조정
+    if (Math.abs(deltaX) >= 30) {
+      // 플레이어를 마주보는 것이 기준일때
+      // x가 0보다 작다는것은 현재 위치보다 플레이어가 오른쪽에 있다는것.
+      // 고로 x축 이동 거리를 -조정
+      if (deltaX < 0) {
+        targetX -= distanceX;
+        this.play("Right");
+      }
+
+      // 반대도 마찬가지
+      else {
+        targetX += distanceX;
+        this.play("Left");
+      }
+    }
+    return { targetX, targetY };
   }
 
   shootBullet(damage) {
