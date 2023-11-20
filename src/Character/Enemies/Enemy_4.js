@@ -1,5 +1,7 @@
 import baseEnemy from "../baseEnemy";
 
+import Enemy4_Bullet from "../../Effect/Enemy4_Bullet";
+
 export default class Enemy4 extends baseEnemy {
   // 클래스 변수(프로퍼티), 모든 인스턴스가 해당 변수를 공유할 수 있다
 
@@ -7,6 +9,8 @@ export default class Enemy4 extends baseEnemy {
   static MAX_HP = 40;
   // 공격력
   static ATTACK_POWER = 10;
+  // 공격속도
+  static ATTACK_SPEED = 1000;
   // 이동속도
   static SPEED = 100;
   // 이동거리
@@ -29,6 +33,29 @@ export default class Enemy4 extends baseEnemy {
 
     // 이동 타이머 추가
     this.startMoveTimer();
+
+    // 공격 이벤트 추가
+    this.startShootEvent();
+  }
+
+  startShootEvent() {
+    this.shootEvent = this.scene.time.addEvent({
+      delay: Enemy4.ATTACK_SPEED,
+      callback: () => {
+        this.shootBullet(this.attackPower);
+      },
+      loop: true,
+    });
+  }
+
+  shootBullet(damage) {
+    // 이동이 가능할때만 실행
+    if (this.isMoveable) {
+      // 새로운 bullet 객체를 생성
+      let bullet = new Enemy4_Bullet(this.scene, this, damage);
+      // 이동속도 조정
+      bullet.body.velocity.y = +300;
+    }
   }
 
   startMoveTimer() {
@@ -135,7 +162,14 @@ export default class Enemy4 extends baseEnemy {
   }
 
   death() {
+    // 인스턴스를 파괴하기 전 타이머, 이벤트, tweens 들을 제거
     this.scene.tweens.killTweensOf(this);
+    if (this.moveTimer) {
+      clearTimeout(this.moveTimer);
+    }
+    if (this.shootEvent) {
+      this.shootEvent.remove();
+    }
 
     super.death();
   }
