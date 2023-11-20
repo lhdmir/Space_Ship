@@ -98,10 +98,10 @@ export default class Enemy4 extends baseEnemy {
 
     // 화면의 절반 계산
     const HALF_WIDTH = this.scene.sys.game.config.width / 2;
-    // 적 기준 화면 왼쪽 끝은 (화면 - 100)
-    const TARGET_X_LEFT = this.scene.sys.game.config.width - 100;
-    // 적 기준 화면 오른쪽 끝은 (화면 + 100)
-    const TARGET_X_RIGHT = 100;
+    // 적 기준 화면 왼쪽 끝은 (화면 - 50)
+    const TARGET_X_LEFT = this.scene.sys.game.config.width - 50;
+    // 적 기준 화면 오른쪽 끝은 (화면 + 50)
+    const TARGET_X_RIGHT = 50;
 
     // 현재 x의 위치가 화면의 절반보다 크다면
     // 목적지 x좌표는 RIGHT

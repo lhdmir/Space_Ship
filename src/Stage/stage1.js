@@ -33,12 +33,12 @@ export default class Stage1 extends BaseStage {
     // new Enemy1(this, 100, 100);
     // new Enemy2(this, 400, 100);
     // new Enemy3(this, 700, 100);
-    new Enemy4(this, 100, 100);
-    new Enemy4(this, 200, 100);
-    new Enemy4(this, 300, 100);
-    new Enemy4(this, 400, 100);
-    new Enemy4(this, 500, 100);
-    new Enemy4(this, 600, 100);
+    // new Enemy4(this, 100, 100);
+    // new Enemy4(this, 200, 100);
+    // new Enemy4(this, 300, 100);
+    // new Enemy4(this, 400, 100);
+    // new Enemy4(this, 500, 100);
+    // new Enemy4(this, 600, 100);
     new Enemy4(this, 700, 100);
   }
 
