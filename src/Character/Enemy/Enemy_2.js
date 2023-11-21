@@ -137,7 +137,6 @@ export default class Enemy2 extends baseEnemy {
         targetX -= distanceX;
         this.play("Right");
       }
-
       // 반대도 마찬가지
       else {
         targetX += distanceX;
@@ -151,9 +150,7 @@ export default class Enemy2 extends baseEnemy {
     // 이동이 가능할때만 실행
     if (this.isMoveable) {
       // 새로운 bullet 객체를 생성
-      let bullet = new Enemy2_Bullet1(this.scene, this, damage);
-      // 이동속도 조정
-      bullet.body.velocity.y = +200;
+      new Enemy2_Bullet1(this.scene, this, damage);
     }
   }
 

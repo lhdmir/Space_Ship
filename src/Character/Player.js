@@ -70,6 +70,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     // 콤보 증가 이벤트 리스너 생성
     this.createComboCountUpEventListener();
+
+    // 플레이어가 화면 밖으로 못나가게 설정
+    setTimeout(() => {
+      this.setCollideWorldBounds(true);
+    }, 500);
   }
 
   createPlayerAnimations() {
@@ -146,9 +151,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     // 스폰이 완료되면 Bullet 생성
     if (this.isMoveable) {
       // bullet 인스턴스 생성
-      let bullet = new Player_Bullet(this.scene, this, damage);
-      // bullet 이동속도 설정
-      bullet.body.velocity.y = -300;
+      new Player_Bullet(this.scene, this, damage);
     }
   }
 

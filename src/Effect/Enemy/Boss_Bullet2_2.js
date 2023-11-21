@@ -1,6 +1,6 @@
 import Base_Enemy_Bullet from "./Base_Enemy_Bullet";
 
-export default class Enemy2_Bullet2 extends Base_Enemy_Bullet {
+export default class Boss_Bullet2_2 extends Base_Enemy_Bullet {
   constructor(scene, firstBullet, direction, damage) {
     super(
       scene,
@@ -9,10 +9,11 @@ export default class Enemy2_Bullet2 extends Base_Enemy_Bullet {
       200 * direction,
       0,
       damage,
-      28,
-      29,
+      6,
+      7,
       0.2,
-      0.2
+      0.2,
+      "Boss_Bullet"
     );
 
     // 총알 방향 설정

@@ -52,9 +52,7 @@ export default class Enemy4 extends baseEnemy {
     // 이동이 가능할때만 실행
     if (this.isMoveable) {
       // 새로운 bullet 객체를 생성
-      let bullet = new Enemy4_Bullet(this.scene, this, damage);
-      // 이동속도 조정
-      bullet.body.velocity.y = +400;
+      new Enemy4_Bullet(this.scene, this, damage);
     }
   }
 

@@ -5,11 +5,14 @@ export default class Base_Enemy_Bullet extends Phaser.Physics.Arcade.Sprite {
     scene,
     x,
     y,
+    velocityX,
+    velocityY,
     damage,
     animStartFrame,
     animEndFrame,
     collisionWidthFactor,
-    collisionHeightFactor
+    collisionHeightFactor,
+    spriteKey = "Enemies"
   ) {
     // 좌표를 토대로 생성
     super(scene, x, y);
@@ -21,7 +24,7 @@ export default class Base_Enemy_Bullet extends Phaser.Physics.Arcade.Sprite {
     this.scene.physics.world.enableBody(this);
 
     // Bullet 애니메이션 생성
-    this.createBulletAnimation(animStartFrame, animEndFrame);
+    this.createBulletAnimation(animStartFrame, animEndFrame, spriteKey);
 
     // 총알 초기 설정
     this.damage = damage;
@@ -37,6 +40,11 @@ export default class Base_Enemy_Bullet extends Phaser.Physics.Arcade.Sprite {
 
     // Enemy 그룹에 오브젝트 추가
     this.scene.enemy_bullet.add(this);
+
+    // 속도 설정
+    setTimeout(() => {
+      this.setVelocity(velocityX, velocityY);
+    }, 50);
   }
 
   update() {
@@ -46,14 +54,14 @@ export default class Base_Enemy_Bullet extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
-  createBulletAnimation(startFrame, endFrame) {
+  createBulletAnimation(startFrame, endFrame, spriteKey) {
     this.anims.create({
       key: "Bullet",
-      frames: this.anims.generateFrameNumbers("Enemies", {
+      frames: this.anims.generateFrameNumbers(spriteKey, {
         start: startFrame,
         end: endFrame,
       }),
-      frameRate: 10,
+      frameRate: 8,
       repeat: -1,
     });
   }

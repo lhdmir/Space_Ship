@@ -26,6 +26,11 @@ export default class Player_Bullet extends Phaser.Physics.Arcade.Sprite {
 
     // Bullets 그룹에 오브젝트 추가
     this.scene.player_bullet.add(this);
+
+    // Bullet 속도 설정
+    setTimeout(() => {
+      this.setVelocityY(-300);
+    }, 50);
   }
 
   update() {

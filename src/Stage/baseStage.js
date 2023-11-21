@@ -103,9 +103,9 @@ export default class BaseStage extends Phaser.Scene {
       frameHeight: 64,
     });
     // Boss Bullet 로드
-    this.load.spritesheet("Boss_Bullet", "./Asset/Boss_2.png", {
-      frameWidth: 32,
-      frameHeight: 32,
+    this.load.spritesheet("Boss_Bullet", "./Asset/Boss_Bullet.png", {
+      frameWidth: 16,
+      frameHeight: 16,
     });
     // Boss Explosion 로드
     this.load.spritesheet("Boss_Explosion", "./Asset/Boss_Explosion.png", {
@@ -130,15 +130,13 @@ export default class BaseStage extends Phaser.Scene {
 
   createPlayer(scene, currentHp, attackPower, comboCount) {
     // 플레이어 생성
+    this.player = new Player(scene, currentHp, attackPower, comboCount);
+
+    // 물리 이벤트를 위해서 플레이어를 그룹에 추가
     this.playerGroup = this.physics.add.group({
       runChildUpdate: true,
     });
-    this.player = new Player(scene, currentHp, attackPower, comboCount);
-
     this.playerGroup.add(this.player);
-
-    // 플레이어가 화면 밖으로 못나가게 설정
-    this.player.setCollideWorldBounds(true);
 
     // 플레이어 생성 후 Spawn 재생
     // Spawn 재생이 끝나면 Idle을 재생하고 spawn플래그를 false로 변경

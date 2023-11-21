@@ -17,6 +17,7 @@ import Enemies_Image from "../Asset/Enemy/Enemies.png";
 import Enemies_Explosion_Image from "../Asset/Enemy/Enemy_Explosion.png";
 // Boss Image
 import Boss_Image from "../Asset/Enemy/Boss_2.png";
+import Boss_Bullet_Image from "../Asset/Enemy/Boss_Bullet.png";
 import Boss_Explosion_Image from "../Asset/Enemy/Boss_Explosion.png";
 
 const config = {
