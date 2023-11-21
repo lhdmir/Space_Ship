@@ -95,6 +95,23 @@ export default class BaseStage extends Phaser.Scene {
       frameWidth: 32,
       frameHeight: 32,
     });
+
+    // 보스 스프라이트는 따로 로드
+    // Boss 스프라이트시트 로드
+    this.load.spritesheet("Boss", "./Asset/Boss_2.png", {
+      frameWidth: 64,
+      frameHeight: 64,
+    });
+    // Boss Bullet 로드
+    this.load.spritesheet("Boss_Bullet", "./Asset/Boss_2.png", {
+      frameWidth: 32,
+      frameHeight: 32,
+    });
+    // Boss Explosion 로드
+    this.load.spritesheet("Boss_Explosion", "./Asset/Boss_Explosion.png", {
+      frameWidth: 64,
+      frameHeight: 64,
+    });
   }
 
   assignKeys() {
