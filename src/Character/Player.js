@@ -68,6 +68,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     // 300ms 한번씩 shotBullet()을 호출하는 이벤트를 추가
     this.startShootEvent();
 
+    // 콤보 증가 이벤트 리스너 생성
     this.createComboCountUpEventListener();
   }
 
@@ -118,7 +119,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   createComboCountUpEventListener() {
+    // 새로운 이벤트 리스너 생성
     this.comboCountUpEvent = new Phaser.Events.EventEmitter();
+    // "ComboCountUp" 이벤트 수신하면 콤보 증가
     this.comboCountUpEvent.on("ComboCountUp", () => {
       this.comboCount += 1;
 
