@@ -51,24 +51,6 @@ export default class BossEnemy extends baseEnemy {
     });
   }
 
-  // Bullet 생성
-  shootBullet(bulletClass, damage) {
-    if (this.isMoveable) {
-      new bulletClass(
-        this.scene,
-        this.x - BossEnemy.ATTACK_OFFSET,
-        this.y,
-        damage
-      );
-      new bulletClass(
-        this.scene,
-        this.x + BossEnemy.ATTACK_OFFSET,
-        this.y,
-        damage
-      );
-    }
-  }
-
   // 각각의 특정 총알 유형을 위한 메소드
   // Common Bullet
   shootCommonBullet(damage) {
@@ -88,6 +70,24 @@ export default class BossEnemy extends baseEnemy {
   // Mine Bullet
   shootMineBullet(damage) {
     this.shootBullet(Boss_Bullet4, damage);
+  }
+
+  // Bullet 생성
+  shootBullet(bulletClass, damage) {
+    if (this.isMoveable) {
+      new bulletClass(
+        this.scene,
+        this.x - BossEnemy.ATTACK_OFFSET,
+        this.y,
+        damage
+      );
+      new bulletClass(
+        this.scene,
+        this.x + BossEnemy.ATTACK_OFFSET,
+        this.y,
+        damage
+      );
+    }
   }
 
   createSetMoveEvent() {
