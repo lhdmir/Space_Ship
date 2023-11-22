@@ -21,13 +21,31 @@ module.exports = {
         test: [/\.vert$/, /\.frag$/],
         use: "raw-loader",
       },
+      // 이미지 로더
       {
-        test: /\.(gif|png|jpe?g|svg|xml)$/i,
-        loader: "file-loader",
-        options: {
-          outputPath: "Asset/", // 폴더명
-          name: "[name].[ext]", //[파일명][ext]
-        },
+        test: /\.(jpe?g|png|gif)$/i,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              outputPath: "Asset/", // 폴더명
+              name: "[name].[ext]", //[파일명][ext]
+            },
+          },
+        ],
+      },
+      // 웹폰트 로더
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              outputPath: "Asset/", // 폴더명
+              name: "[name].[ext]", //[파일명][ext]
+            },
+          },
+        ],
       },
     ],
   },

@@ -7,6 +7,9 @@ import gameOverScene from "./Scene/gameOverScene.js";
 import gameClearScene from "./Scene/gameClearScene.js";
 
 // Webpack에서 이미지를 참조할 수 있게 import 해준다.
+// Font
+import Default_Font_woff2 from "../Asset/font/neodgm.woff2";
+
 // Background Image
 import Background_Image from "../Asset/background/Space.png";
 // Player Image
