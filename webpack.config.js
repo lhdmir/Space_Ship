@@ -10,6 +10,8 @@ module.exports = {
   },
   module: {
     rules: [
+      // babel loader
+      // 최신 JS의 문법을 오래된 브라우저와 호환될수있도록 변환
       {
         test: /\.js$/,
         exclude: /node_modules/,
@@ -50,7 +52,7 @@ module.exports = {
     ],
   },
   devServer: {
-    static: path.resolve(__dirname, "dist"),
+    static: path.resolve(__dirname, "docs"),
   },
   plugins: [
     new HtmlWebpackPlugin({
