@@ -2,6 +2,8 @@ import Phaser from "phaser";
 
 import { createBackground } from "../base/baseModule";
 
+import Background_Image from "../Asset/Background/Space.png";
+
 import {
   createGameMainText,
   createRestartText,
@@ -14,7 +16,7 @@ export default class gameClearScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("Background_Image", "./Asset/Space.png");
+    this.load.image("Background_Image", Background_Image);
   }
 
   create() {

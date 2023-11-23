@@ -58,9 +58,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     // alpha 값 설정. 1은 불투명
     this.setAlpha(1);
 
-    // 화면 밖으로 나가지 않도록 설정
-    this.setCollideWorldBounds(true);
-
     // 애니메이션 생성
     this.createPlayerAnimations();
 

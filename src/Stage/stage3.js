@@ -24,12 +24,12 @@ export default class Stage3 extends BaseStage {
     super.create();
 
     // test enemy 생성
-    this.enemies.add(new Enemy4(this, 100, 50));
-    this.enemies.add(new Enemy2(this, 250, 100));
-    this.enemies.add(new Enemy3(this, 350, 50));
-    this.enemies.add(new Enemy3(this, 450, 50));
-    this.enemies.add(new Enemy2(this, 550, 100));
-    this.enemies.add(new Enemy4(this, 700, 50));
+    new Enemy4(this, 100, 50);
+    new Enemy2(this, 250, 100);
+    new Enemy3(this, 350, 50);
+    new Enemy3(this, 450, 50);
+    new Enemy2(this, 550, 100);
+    new Enemy4(this, 700, 50);
   }
 
   update() {

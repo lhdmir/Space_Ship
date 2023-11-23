@@ -2,8 +2,6 @@
 
 export function createBackground(scene) {
   // background 생성 함수
-  // export 키워드로 다른 파일에서 import 해서 사용할 수 있도록 함.
-  // 씬을 매개변수로 받음
 
   // 매개변수로 받은 씬 내부에 bg 변수를 생성하여 타일 스프라이트를 저장
   scene.bg = scene.add.tileSprite(
