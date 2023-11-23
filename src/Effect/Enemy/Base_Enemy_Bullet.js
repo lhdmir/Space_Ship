@@ -43,7 +43,7 @@ export default class Base_Enemy_Bullet extends Phaser.Physics.Arcade.Sprite {
 
     // 속도 설정
     setTimeout(() => {
-      this.setVelocity(velocityX, velocityY);
+      if (this.active) this.setVelocity(velocityX, velocityY);
     }, 50);
   }
 

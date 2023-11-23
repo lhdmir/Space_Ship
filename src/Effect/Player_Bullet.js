@@ -29,7 +29,7 @@ export default class Player_Bullet extends Phaser.Physics.Arcade.Sprite {
 
     // Bullet 속도 설정
     setTimeout(() => {
-      this.setVelocityY(-300);
+      if (this.active) this.setVelocityY(-300);
     }, 50);
   }
 

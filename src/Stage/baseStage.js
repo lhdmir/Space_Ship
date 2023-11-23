@@ -12,6 +12,21 @@ import Player from "../Character/Player";
 // Player_Bullet Class import
 import Player_Bullet from "../Effect/Player_Bullet";
 
+// Image import
+
+// Background Image
+import Background_Image from "../Asset/Background/Space.png";
+// Player Image
+import Player_Image from "../Asset/Player/Ship.png";
+import Bullet_Image from "../Asset/Player/Bullet.png";
+// Enemies Image
+import Enemies_Image from "../Asset/Enemy/Enemies.png";
+import Enemies_Explosion_Image from "../Asset/Enemy/Enemy_Explosion.png";
+// Boss Image
+import Boss_Image from "../Asset/Enemy/Boss_2.png";
+import Boss_Bullet_Image from "../Asset/Enemy/Boss_Bullet.png";
+import Boss_Explosion_Image from "../Asset/Enemy/Boss_Explosion.png";
+
 // Default Stage Class
 export default class BaseStage extends Phaser.Scene {
   constructor(key) {
@@ -70,45 +85,45 @@ export default class BaseStage extends Phaser.Scene {
 
   loadAsset() {
     // 배경 로드
-    this.load.image("Background_Image", "./Asset/Space.png");
+    this.load.image("Background_Image", Background_Image);
 
     // 플레이어 스프라이트시트를 Player 라는 이름으로 로드, 각 장당 32*32 사이즈로 자름
-    this.load.spritesheet("Player", "./Asset/Ship.png", {
+    this.load.spritesheet("Player", Player_Image, {
       frameWidth: 32,
       frameHeight: 32,
     });
 
     // Bullet 스프라이트시트를 Bullets 라는 이름으로 로드
-    this.load.spritesheet("Bullets", "./Asset/Bullet.png", {
+    this.load.spritesheet("Bullets", Bullet_Image, {
       frameWidth: 32,
       frameHeight: 32,
     });
 
     // Enemy 스프라이트시트를 Enemies 라는 이름으로 로드
-    this.load.spritesheet("Enemies", "./Asset/Enemies.png", {
+    this.load.spritesheet("Enemies", Enemies_Image, {
       frameWidth: 32,
       frameHeight: 32,
     });
 
     // Enemy Explosion 스프라이트시트 로드
-    this.load.spritesheet("Enemy_Explosion", "./Asset/Enemy_Explosion.png", {
+    this.load.spritesheet("Enemy_Explosion", Enemies_Explosion_Image, {
       frameWidth: 32,
       frameHeight: 32,
     });
 
     // 보스 스프라이트는 따로 로드
     // Boss 스프라이트시트 로드
-    this.load.spritesheet("Boss", "./Asset/Boss_2.png", {
+    this.load.spritesheet("Boss", Boss_Image, {
       frameWidth: 64,
       frameHeight: 64,
     });
     // Boss Bullet 로드
-    this.load.spritesheet("Boss_Bullet", "./Asset/Boss_Bullet.png", {
+    this.load.spritesheet("Boss_Bullet", Boss_Bullet_Image, {
       frameWidth: 16,
       frameHeight: 16,
     });
     // Boss Explosion 로드
-    this.load.spritesheet("Boss_Explosion", "./Asset/Boss_Explosion.png", {
+    this.load.spritesheet("Boss_Explosion", Boss_Explosion_Image, {
       frameWidth: 64,
       frameHeight: 64,
     });
