@@ -38,7 +38,7 @@ export default class BaseStage extends Phaser.Scene {
   }
 
   create() {
-    this.physics.world.createDebugGraphic();
+    // this.physics.world.createDebugGraphic();
 
     // background 생성
     createBackground(this);

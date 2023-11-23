@@ -66,7 +66,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     // 공격 이벤트
     // 300ms 한번씩 shotBullet()을 호출하는 이벤트를 추가
-    // this.startShootEvent();
+    this.startShootEvent();
 
     // 콤보 증가 이벤트 리스너 생성
     this.createComboCountUpEventListener();
