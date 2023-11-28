@@ -2,8 +2,9 @@ import Base_Enemy_Bullet from "./Base_Enemy_Bullet";
 
 import Boss_Bullet2_2 from "./Boss_Bullet2_2";
 
+// 분리형 총알
 export default class Boss_Bullet2_1 extends Base_Enemy_Bullet {
-  constructor(scene, x, y, damage) {
+  constructor(scene, x, y, damage, LR) {
     super(scene, x, y + 30, 0, 200, damage, 4, 5, 0.3, 0.3, "Boss_Bullet");
 
     // Bullet 분리
@@ -11,8 +12,8 @@ export default class Boss_Bullet2_1 extends Base_Enemy_Bullet {
   }
 
   bulletSplit() {
-    // 0.5초에서 2초 사이에 랜덤하게 분리됨
-    let splitTimeLimit = Math.floor(Math.random() * (3000 - 500) + 500);
+    // 1초에서 3초 사이에 랜덤하게 분리됨
+    let splitTimeLimit = Math.floor(Math.random() * (3000 - 1000) + 1000);
     setTimeout(() => {
       // 해당 객체가 active 상태일때만 실행
       if (this.active) {
