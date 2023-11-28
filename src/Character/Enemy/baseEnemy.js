@@ -5,7 +5,7 @@ export default class baseEnemy extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
     // 자식 클래스의 인스턴트가 생성될때 x,y 좌표를 받아서
     // 생성자를 실행
-    super(scene, x, -50);
+    super(scene, x, -200);
 
     // 매개변수로 받은 씬의 정보를 저장
     this.scene = scene;
@@ -76,6 +76,7 @@ export default class baseEnemy extends Phaser.Physics.Arcade.Sprite {
       yoyo: false, // 원래 위치로 돌아갈지 여부
       onComplete: () => {
         enemy.isMoveable = true;
+        enemy.setCollideWorldBounds(true);
       },
     });
   }

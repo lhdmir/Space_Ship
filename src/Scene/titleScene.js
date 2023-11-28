@@ -1,24 +1,20 @@
 import Phaser from "phaser";
-// Background_Image 라는 이름으로 로드하기 위해서는 import해줘야함
-// import Background_Image from "../Asset/background/Space.png";
+
+// Background Image import
+import Background_Image from "../Asset/Background/Space.png";
 
 // baseModule 의 createBackground 함수 import
 import { createBackground } from "../base/baseModule";
 
-// 타이틀 씬 클래스
+// TitleScene Class
 export default class TitleScene extends Phaser.Scene {
   constructor() {
-    // phaser에서는 씬을 고유한 키로 표현한다.
-    // 타이틀 씬의 키를 "TitleScene" 으로 지정했다.
     super({ key: "TitleScene" });
   }
 
   // 게임에서 필요한 자원들을 미리 로드하는 함수.
   preload() {
-    // dist/Asset/Space.png 파일을 배경으로 로드.
-    this.load.image("Background_Image", "./Asset/Space.png");
-    // 이런식으로도 로드 할 수 있다
-    // this.load.image("Background_Image", Background_Image);
+    this.load.image("Background_Image", Background_Image);
   }
 
   // 게임에서 사용할 객체들을 생성하는 함수.

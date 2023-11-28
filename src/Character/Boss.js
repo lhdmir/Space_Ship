@@ -7,9 +7,9 @@ import Boss_Bullet4 from "../Effect/Enemy/Boss_Bullet4";
 
 export default class BossEnemy extends baseEnemy {
   // 최대 체력
-  static MAX_HP = 500;
+  static MAX_HP = 1000;
   // 공격력
-  static ATTACK_POWER = 10;
+  static ATTACK_POWER = 30;
   // 공격속도
   static ATTACK_SPEED = 1000;
   // 공격 offset
@@ -36,56 +36,63 @@ export default class BossEnemy extends baseEnemy {
     this.play("Move");
 
     // 이동 결정 이벤트 추가
-    // this.createSetMoveEvent();
+    this.createSetMoveEvent();
 
-    ////////////////////////////////////////////////
-    this.shootEvent = this.scene.time.addEvent({
-      delay: BossEnemy.ATTACK_SPEED,
-      callback: () => {
-        // this.shootCommonBullet(this.attackPower);
-        // this.shootSplitBullet(this.attackPower);
-        // this.shootSpinBullet(this.attackPower);
-        // this.shootMineBullet(this.attackPower);
-      },
-      loop: true,
-    });
+    // interval ID 저장 배열
+    this.intervals = [];
+  }
+
+  // Shoot Bullet
+  shootBullet(bulletClass, damage, shootCount, delay) {
+    let count = 0;
+    const interval = setInterval(() => {
+      this.createBullet(bulletClass, damage);
+      count++;
+
+      if (count >= shootCount) clearInterval(interval);
+    }, delay);
+    this.intervals.push(interval);
   }
 
   // 각각의 특정 총알 유형을 위한 메소드
   // Common Bullet
   shootCommonBullet(damage) {
-    this.shootBullet(Boss_Bullet1, damage);
+    this.shootBullet(Boss_Bullet1, damage, 5, 500);
   }
 
   // Split Bullet
   shootSplitBullet(damage) {
-    this.shootBullet(Boss_Bullet2_1, damage);
+    this.shootBullet(Boss_Bullet2_1, damage, 5, 1000);
   }
 
   // Spin Bullet
   shootSpinBullet(damage) {
-    this.shootBullet(Boss_Bullet3, damage);
+    this.shootBullet(Boss_Bullet3, damage, 3, 1000);
   }
 
   // Mine Bullet
   shootMineBullet(damage) {
-    this.shootBullet(Boss_Bullet4, damage);
+    this.shootBullet(Boss_Bullet4, damage, 3, 1000);
   }
 
   // Bullet 생성
-  shootBullet(bulletClass, damage) {
+  createBullet(bulletClass, damage) {
     if (this.isMoveable) {
+      // Right
       new bulletClass(
         this.scene,
         this.x - BossEnemy.ATTACK_OFFSET,
         this.y,
-        damage
+        damage,
+        1
       );
+      // Left
       new bulletClass(
         this.scene,
         this.x + BossEnemy.ATTACK_OFFSET,
         this.y,
-        damage
+        damage,
+        -1
       );
     }
   }
@@ -103,9 +110,20 @@ export default class BossEnemy extends baseEnemy {
   setMove() {
     // 50% 확률로 회피, 추격 둘중 하나를 선택
     if (Math.random() < 0.5) {
+      this.setBullet(this.shootCommonBullet, this.shootSpinBullet);
       this.chase();
     } else {
+      this.setBullet(this.shootSplitBullet, this.shootMineBullet);
       this.evasion();
+    }
+  }
+
+  setBullet(firstBullet, secondBullet) {
+    // 50프로 확률로 bullet을 결정
+    if (Math.random() < 0.5) {
+      firstBullet.bind(this)(this.attackPower);
+    } else {
+      secondBullet.bind(this)(this.attackPower);
     }
   }
 
@@ -131,12 +149,6 @@ export default class BossEnemy extends baseEnemy {
         repeat: 0,
         yoyo: false,
         removeOnComplete: true,
-        // onComplete: () => {
-        //   // 이동이 완료되면 애니메이션을 Move로 변경후
-        //   // 공격실행
-        //   this.play("Move");
-        //   this.shootBullet(this.attackPower);
-        // },
       });
     }
   }
@@ -157,12 +169,6 @@ export default class BossEnemy extends baseEnemy {
         repeat: 0,
         yoyo: false,
         removeOnComplete: true,
-        // onComplete: () => {
-        //   // 이동이 완료되면 애니메이션을 Move로 변경후
-        //   // 공격실행
-        //   this.play("Move");
-        //   this.shootBullet(this.attackPower);
-        // },
       });
     }
   }
@@ -214,5 +220,16 @@ export default class BossEnemy extends baseEnemy {
       frameRate: 10,
       repeat: 0,
     });
+  }
+
+  death() {
+    // 인스턴스를 파괴하기 전 타이머, 이벤트, tweens 들을 제거
+    this.scene.tweens.killTweensOf(this);
+    if (this.setMoveEvent) {
+      this.setMoveEvent.remove();
+    }
+    this.intervals.forEach(clearInterval);
+
+    super.death();
   }
 }

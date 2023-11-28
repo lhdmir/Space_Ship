@@ -3,6 +3,7 @@ import TitleScene from "./Scene/titleScene.js";
 import Stage1 from "./Stage/stage1.js";
 import Stage2 from "./Stage/stage2.js";
 import Stage3 from "./Stage/stage3.js";
+import Stage4 from "./Stage/stage4.js";
 import gameOverScene from "./Scene/gameOverScene.js";
 import gameClearScene from "./Scene/gameClearScene.js";
 
@@ -13,7 +14,15 @@ const config = {
   type: Phaser.AUTO, // WebGL if available, otherwise Canvas
   width: 800,
   height: 750,
-  scene: [TitleScene, gameOverScene, gameClearScene, Stage1, Stage2, Stage3], // 여기에 Scene 배열을 추가
+  scene: [
+    TitleScene,
+    gameOverScene,
+    gameClearScene,
+    Stage1,
+    Stage2,
+    Stage3,
+    Stage4,
+  ], // 여기에 Scene 배열을 추가
   autoCenter: Phaser.Scale.Center.CENTER_HORIZONTALLY, // 게임화면을 center에 맞춤
   pixelArt: true,
   physics: {
