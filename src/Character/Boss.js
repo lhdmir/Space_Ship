@@ -222,14 +222,14 @@ export default class BossEnemy extends baseEnemy {
     });
   }
 
-  death() {
+  destroy() {
     // 인스턴스를 파괴하기 전 타이머, 이벤트, tweens 들을 제거
-    this.scene.tweens.killTweensOf(this);
+    // this.scene.tweens.killTweensOf(this);
     if (this.setMoveEvent) {
       this.setMoveEvent.remove();
     }
     this.intervals.forEach(clearInterval);
 
-    super.death();
+    super.destroy();
   }
 }
