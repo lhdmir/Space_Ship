@@ -15,6 +15,8 @@ export default class Boss_Bullet3 extends Base_Enemy_Bullet {
 
   // 타겟을 향해 발사하는 함수
   shootAtTarget(LR) {
+    // speed
+    const speed = 200;
     // 타겟 좌표 계산
     const offset = LR === 1 ? -100 : 100;
     // player x 부터 offset까지중 랜덤값
@@ -28,16 +30,29 @@ export default class Boss_Bullet3 extends Base_Enemy_Bullet {
     const angle = Phaser.Math.Angle.Between(this.x, this.y, targetX, targetY);
 
     // 발사체의 속도 설정
-    this.scene.physics.velocityFromAngle(
-      Phaser.Math.RadToDeg(angle),
-      200,
-      this.body.velocity
-    );
+
+    const velocityX = Math.cos(angle) * speed;
+    const velocityY = Math.sin(angle) * speed;
+    this.setVelocity(velocityX, velocityY);
   }
 
   destroy() {
+    console.log("spin bullet destroy");
     if (this.shootAtTarget) {
       clearTimeout(this.shootTimer);
+    }
+
+    super.destroy();
+  }
+
+  update() {
+    // 총알이 화면 밖으로 나가면 제거
+    if (this.x < 0 || 800 < this.x) {
+      this.destroy();
+    }
+
+    if (this.y > 750) {
+      this.destroy();
     }
   }
 }
